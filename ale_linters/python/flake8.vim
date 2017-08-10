@@ -129,7 +129,10 @@ function! ale_linters#python#flake8#Handle(buffer, lines) abort
         \   'type': 'W',
         \}
 
-        if l:code[:0] is# 'F' || l:code is# 'E999'
+        if exists('g:ale_python_flake8_code_to_type') &&
+                \ has_key(g:ale_python_flake8_code_to_type, l:code)
+            let l:item.type = g:ale_python_flake8_code_to_type[l:code]
+        elseif l:code[:0] is# 'F' || l:code is# 'E999'
             let l:item.type = 'E'
         elseif l:code[:0] is# 'E'
             let l:item.type = 'E'
