@@ -39,11 +39,23 @@ function! ale_linters#c#clangtidy#GetCommand(buffer) abort
     " Get the extra options if we couldn't find a build directory.
     let l:options = empty(l:build_dir)
     \   ? ale#Var(a:buffer, 'c_clangtidy_options')
+    \       . ' -iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h'))
     \   : ''
+
+    if empty(l:build_dir)
+        let l:filename = tempname() . '_clangtidy_linted.c'
+        " Create a special filename, so we can detect it in the handler.
+        call ale#engine#ManageFile(a:buffer, l:filename)
+        let l:lines = getbufline(a:buffer, 1, '$')
+        call ale#util#Writefile(a:buffer, l:lines, l:filename)
+        let l:filename = ale#Escape(l:filename)
+    else
+        let l:filename = '%s'
+    endif
 
     return ale#Escape(ale_linters#c#clangtidy#GetExecutable(a:buffer))
     \   . (!empty(l:checks) ? ' -checks=' . ale#Escape(l:checks) : '')
-    \   . ' %s'
+    \   . ' ' . l:filename
     \   . (!empty(l:build_dir) ? ' -p ' . ale#Escape(l:build_dir) : '')
     \   . (!empty(l:options) ? ' -- ' . l:options : '')
 endfunction
@@ -54,5 +66,5 @@ call ale#linter#Define('c', {
 \   'executable_callback': 'ale_linters#c#clangtidy#GetExecutable',
 \   'command_callback': 'ale_linters#c#clangtidy#GetCommand',
 \   'callback': 'ale#handlers#gcc#HandleGCCFormat',
-\   'lint_file': 1,
+\   'read_buffer': 0,
 \})
