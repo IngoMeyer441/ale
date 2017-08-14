@@ -53,11 +53,28 @@ function! ale#fixers#clangtidy#Fix(buffer, lines) abort
         let l:filename = '%s'
     endif
 
+    let l:filter_lines = []
+    let l:start_interval = -1
+    let l:previous_line = -1
+    for l:current_line in a:lines
+        if l:start_interval < 0
+            let l:start_interval = l:current_line
+        elseif l:current_line > l:previous_line + 1
+            call add(l:filter_lines, [l:start_interval, l:previous_line])
+            let l:start_interval = l:current_line
+        endif
+        let l:previous_line = l:current_line
+    endfor
+    if l:start_interval >= 0
+        call add(l:filter_lines, [l:start_interval, l:previous_line])
+    endif
+
     return {
     \   'command': ale#Escape(ale#fixers#clangtidy#GetExecutable(a:buffer))
     \       . (!empty(l:checks) ? ' -checks=' . ale#Escape(l:checks) : '')
     \       . ' %t'
     \       . ' -fix-errors'
+    \       . ' -line-filter=''[{"name":"%t","lines":' . string(l:filter_lines) . '}]'''
     \       . (!empty(l:build_dir) ? ' -p ' . ale#Escape(l:build_dir) : '')
     \       . (!empty(l:options) ? ' -- ' . l:options : ''),
     \   'read_temporary_file': 1,
