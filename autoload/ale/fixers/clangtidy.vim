@@ -32,7 +32,7 @@ function! s:GetBuildDirectory(buffer) abort
     return ale#c#FindCompileCommands(a:buffer)
 endfunction
 
-function! ale#fixers#clangtidy#Fix(buffer, lines) abort
+function! ale#fixers#clangtidy#Fix(buffer, lines, fix_whole_buffer, line_range) abort
     let l:checks = join(ale#Var(a:buffer, &filetype . '_clangtidy_checks'), ',')
     let l:build_dir = s:GetBuildDirectory(a:buffer)
 
@@ -53,11 +53,16 @@ function! ale#fixers#clangtidy#Fix(buffer, lines) abort
         let l:filename = '%s'
     endif
 
+    let l:line_filter = a:fix_whole_buffer
+    \   ? ''
+    \   : ' -line-filter=''[{"name":"%t","lines":[' . string(a:line_range) . ']}]'''
+
     return {
     \   'command': ale#Escape(ale#fixers#clangtidy#GetExecutable(a:buffer))
     \       . (!empty(l:checks) ? ' -checks=' . ale#Escape(l:checks) : '')
     \       . ' %t'
     \       . ' -fix-errors'
+    \       . l:line_filter
     \       . (!empty(l:build_dir) ? ' -p ' . ale#Escape(l:build_dir) : '')
     \       . (!empty(l:options) ? ' -- ' . l:options : ''),
     \   'read_temporary_file': 1,

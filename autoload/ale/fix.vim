@@ -109,6 +109,8 @@ function! s:HandleExit(job_id, exit_code) abort
 
     call s:RunFixer({
     \   'buffer': l:job_info.buffer,
+    \   'fix_whole_buffer': 1,
+    \   'line_range': [],
     \   'input': l:input,
     \   'callback_list': l:job_info.callback_list,
     \   'callback_index': l:job_info.callback_index + 1,
@@ -235,15 +237,23 @@ endfunction
 
 function! s:RunFixer(options) abort
     let l:buffer = a:options.buffer
+    let l:fix_whole_buffer = a:options.fix_whole_buffer
+    let l:line_range = a:options.line_range
     let l:input = a:options.input
     let l:index = a:options.callback_index
 
     while len(a:options.callback_list) > l:index
         let l:Function = a:options.callback_list[l:index]
 
-        let l:result = ale#util#FunctionArgCount(l:Function) == 1
-        \   ? call(l:Function, [l:buffer])
-        \   : call(l:Function, [l:buffer, copy(l:input)])
+        if ale#util#FunctionArgCount(l:Function) == 1
+            let l:result = call(l:Function, [l:buffer])
+        elseif ale#util#FunctionArgCount(l:Function) == 2
+            let l:result = call(l:Function, [l:buffer, copy(l:input)])
+        else
+            let l:result = call(l:Function, [l:buffer, copy(l:input),
+                                         \   l:fix_whole_buffer,
+                                         \   copy(l:line_range)])
+        endif
 
         if type(l:result) == type(0) && l:result == 0
             " When `0` is returned, skip this item.
@@ -328,10 +338,12 @@ endfunction
 " Accepts an optional argument for what to do when fixing.
 "
 " Returns 0 if no fixes can be applied, and 1 if fixing can be done.
-function! ale#fix#Fix(...) abort
+function! ale#fix#Fix(...) abort range
     if len(a:0) > 1
         throw 'too many arguments!'
     endif
+
+    let l:fix_whole_buffer = (a:firstline == 1 && a:lastline == line('$'))
 
     let l:fixing_flag = get(a:000, 0, '')
 
@@ -362,6 +374,8 @@ function! ale#fix#Fix(...) abort
 
     call s:RunFixer({
     \   'buffer': l:buffer,
+    \   'fix_whole_buffer': l:fix_whole_buffer,
+    \   'line_range': [a:firstline, a:lastline],
     \   'input': g:ale_fix_buffer_data[l:buffer].lines_before,
     \   'callback_index': 0,
     \   'callback_list': l:callback_list,

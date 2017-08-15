@@ -357,7 +357,7 @@ command! -bar ALEInfo :call ale#debugging#Info()
 command! -bar ALEInfoToClipboard :call ale#debugging#InfoToClipboard()
 
 " Fix problems in files.
-command! -bar ALEFix :call ale#fix#Fix()
+command! -bar -range=% ALEFix :<line1>,<line2>call ale#fix#Fix()
 " Suggest registered functions to use for fixing problems.
 command! -bar ALEFixSuggest :call ale#fix#registry#Suggest(&filetype)
 
