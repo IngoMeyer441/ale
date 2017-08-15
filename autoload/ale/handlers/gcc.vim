@@ -50,7 +50,6 @@ function! ale#handlers#gcc#HandleGCCFormat(buffer, lines) abort
     "
     " <stdin>:8:5: warning: conversion lacks type at end of format [-Wformat=]
     " <stdin>:10:27: error: invalid operands to binary - (have ‘int’ and ‘char *’)
-    " -:189:7: note: $/${} is unnecessary on arithmetic variables. [SC2004]
     let l:pattern = '\v^([a-zA-Z]?:?[^:]+):(\d+):(\d+)?:? ([^:]+): (.+)$'
     let l:output = []
 
@@ -97,6 +96,11 @@ function! ale#handlers#gcc#HandleGCCFormat(buffer, lines) abort
 
             if s:IsHeaderFile(bufname(bufnr('')))
             \&& l:match[5][:len(s:pragma_error) - 1] is# s:pragma_error
+                continue
+            endif
+
+            " ignore 'note:' lines
+            if l:match[4] =~# 'note'
                 continue
             endif
 
