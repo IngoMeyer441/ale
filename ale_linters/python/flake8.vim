@@ -8,6 +8,8 @@ let g:ale_python_flake8_executable =
 let s:default_options = get(g:, 'ale_python_flake8_args', '')
 let g:ale_python_flake8_options =
 \   get(g:, 'ale_python_flake8_options', s:default_options)
+let g:ale_python_flake8_ignore_list =
+\   get(g:, 'ale_python_flake8_ignore_list', '')
 let g:ale_python_flake8_use_global = get(g:, 'ale_python_flake8_use_global', 0)
 
 " A map from Python executable paths to semver strings parsed for those
@@ -80,9 +82,11 @@ function! ale_linters#python#flake8#GetCommand(buffer, version_output) abort
     \   : ''
 
     let l:options = ale#Var(a:buffer, 'python_flake8_options')
+    let l:ignore_list = ale#Var(a:buffer, 'python_flake8_ignore_list')
 
     return ale#Escape(ale_linters#python#flake8#GetExecutable(a:buffer))
     \   . (!empty(l:options) ? ' ' . l:options : '')
+    \   . (!empty(l:ignore_list) ? ' --ignore=' . join(l:ignore_list, ',') : '')
     \   . ' --format=default'
     \   . l:display_name_args . ' -'
 endfunction
