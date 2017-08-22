@@ -1,0 +1,44 @@
+" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Description: Support for clangformat, a c style linter
+
+call ale#Set('c_clangformat_executable', 'clang-format')
+call ale#Set('c_clangformat_options', '')
+call ale#Set('c_clangformat_style', '"BasedOnStyle: Google, ".(&textwidth ? "ColumnLimit: ".&textwidth.", " : "").(&expandtab ? "UseTab: Never, IndentWidth: ".shiftwidth() : "UseTab: Always")')
+
+function! ale_linters#c#clangformat#GetExecutable(buffer) abort
+    return ale#Var(a:buffer, 'c_clangformat_executable')
+endfunction
+
+function! ale_linters#c#clangformat#GetCommand(buffer) abort
+    let l:style = eval(ale#Var(a:buffer, 'c_clangformat_style'))
+    return ale#Escape(ale_linters#c#clangformat#GetExecutable(a:buffer))
+    \   . ' --assume-filename="%s"'
+    \   . ' --style="{' . l:style . '}"'
+    \   . ' ' . ale#Var(a:buffer, 'c_clangformat_options')
+    \   . ' < %t | diff --old-group-format="%df: warning: clang-format style: " --unchanged-line-format="" %t -'
+endfunction
+
+function! ale_linters#c#clangformat#Handle(buffer, lines) abort
+    " matches: '2: warning: ...
+    let l:pattern = '\v(\d+): warning: (.+)$'
+    let l:output = []
+
+    for l:match in ale#util#GetMatches(a:lines, l:pattern)
+        call add(l:output, {
+        \   'lnum': l:match[1] + 0,
+        \   'text': l:match[2],
+        \   'type': 'W',
+        \   'sub_type': 'style',
+        \})
+    endfor
+
+    return l:output
+endfunction
+
+call ale#linter#Define('c', {
+\   'name': 'clangformat',
+\   'executable_callback': 'ale_linters#c#clangformat#GetExecutable',
+\   'command_callback': 'ale_linters#c#clangformat#GetCommand',
+\   'callback': 'ale_linters#c#clangformat#Handle',
+\   'read_buffer': 0
+\})
