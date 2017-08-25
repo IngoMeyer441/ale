@@ -4,6 +4,7 @@
 let g:ale_python_mypy_executable =
 \   get(g:, 'ale_python_mypy_executable', 'mypy')
 let g:ale_python_mypy_options = get(g:, 'ale_python_mypy_options', '')
+let g:ale_python_mypy_ignore_missing_stubs = get(g:, 'ale_python_mypy_ignore_missing_stubs', 0)
 let g:ale_python_mypy_use_global = get(g:, 'ale_python_mypy_use_global', 0)
 
 function! ale_linters#python#mypy#GetExecutable(buffer) abort
@@ -45,6 +46,10 @@ function! ale_linters#python#mypy#Handle(buffer, lines) abort
     let l:output = []
 
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
+        if g:ale_python_mypy_ignore_missing_stubs &&
+        \  l:match[5] =~#  '^No library stub file for module'
+            continue
+        endif
         call add(l:output, {
         \   'filename': ale#path#GetAbsPath(l:dir, l:match[1]),
         \   'lnum': l:match[2] + 0,
