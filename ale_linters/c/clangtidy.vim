@@ -1,9 +1,15 @@
 " Author: vdeurzen <tim@kompiler.org>, w0rp <devw0rp@gmail.com>,
-" gagbo <gagbobada@gmail.com>
+" gagbo <gagbobada@gmail.com>, Andrej Radovic <r.andrej@gmail.com>
 " Description: clang-tidy linter for c files
 
 call ale#Set('c_clangtidy_executable', 'clang-tidy')
 " Set this option to check the checks clang-tidy will apply.
+" The number of checks that can be applied to C files is limited in contrast to
+" C++
+"
+" Consult the check list in clang-tidy's documentation:
+" http://clang.llvm.org/extra/clang-tidy/checks/list.html
+
 call ale#Set('c_clangtidy_checks', ['*'])
 " Set this option to manually set some options for clang-tidy.
 " This will disable compile_commands.json detection.
