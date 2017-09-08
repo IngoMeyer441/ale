@@ -5,14 +5,18 @@ call ale#Set('c_clangwin_executable', 'clang')
 call ale#Set('c_clangwin_options', '-std=c11 -Wall')
 call ale#Set('c_clangwin_windows_include_directory', expand('~/win_include'))
 call ale#Set('c_clangwin_windows_options', '-Wno-unknown-pragmas --target=amd64-pc-windows-msvc -fms-compatibility-version=19 -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')
+call ale#Set('c_clangwin_enable', 0)
 
 function! ale_linters#c#clangwin#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_clangwin_executable')
 endfunction
 
 function! ale_linters#c#clangwin#GetCommand(buffer) abort
-    let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
+    if !ale#Var(a:buffer, 'c_clangwin_enable')
+        return ''
+    endif
 
+    let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
     return ale#Escape(ale_linters#c#clangwin#GetExecutable(a:buffer))
