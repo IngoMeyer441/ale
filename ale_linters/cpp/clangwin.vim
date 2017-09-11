@@ -3,7 +3,7 @@
 
 call ale#Set('cpp_clangwin_executable', 'clang')
 call ale#Set('cpp_clangwin_options', '-std=c++11 -Wall')
-call ale#Set('cpp_clangwin_windows_include_directory', expand('~/win_include'))
+call ale#Set('cpp_clangwin_windows_include_directories', [expand('~/win_include')])
 call ale#Set('cpp_clangwin_windows_options', '-Wno-unknown-pragmas --target=amd64-pc-windows-msvc -fms-compatibility-version=19 -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')
 call ale#Set('cpp_clangwin_enable', 0)
 
@@ -17,6 +17,11 @@ function! ale_linters#cpp#clangwin#GetCommand(buffer) abort
     endif
 
     let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
+    if !empty(ale#Var(a:buffer, 'cpp_clangwin_windows_include_directories'))
+        let l:std_include_paths = '-isystem' . join(ale#Var(a:buffer, 'cpp_clangwin_windows_include_directories'), ' -isystem')
+    else
+        let l:std_include_paths = ''
+    endif
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
     return ale#Escape(ale_linters#cpp#clangwin#GetExecutable(a:buffer))
@@ -25,7 +30,7 @@ function! ale_linters#cpp#clangwin#GetCommand(buffer) abort
     \   . ale#c#IncludeOptions(l:paths) . ' '
     \   . ale#Var(a:buffer, 'cpp_clangwin_options') . ' '
     \   . ale#Var(a:buffer, 'cpp_clangwin_windows_options') . ' '
-    \   . (!empty(ale#Var(a:buffer, 'cpp_clangwin_windows_include_directory')) ? '-nostdinc -isystem' . ale#Var(a:buffer, 'cpp_clangwin_windows_include_directory') . ' ' : '')
+    \   . (!empty(l:std_include_paths) ? '-nostdinc ' . l:std_include_paths : '')
     \   . ' -'
 endfunction
 
