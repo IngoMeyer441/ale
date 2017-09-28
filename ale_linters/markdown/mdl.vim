@@ -1,6 +1,18 @@
 " Author: Steve Dignam <steve@dignam.xyz>
 " Description: Support for mdl, a markdown linter
 
+call ale#Set('markdown_mdl_executable', 'mdl')
+call ale#Set('markdown_mdl_options', '')
+
+function! ale_linters#markdown#mdl#GetExecutable(buffer) abort
+    return ale#Var(a:buffer, 'markdown_mdl_executable')
+endfunction
+
+function! ale_linters#markdown#mdl#GetCommand(buffer) abort
+    return ale#Escape(ale_linters#markdown#mdl#GetExecutable(a:buffer))
+    \   . ' ' . ale#Var(a:buffer, 'markdown_mdl_options')
+endfunction
+
 function! ale_linters#markdown#mdl#Handle(buffer, lines) abort
     " matches: '(stdin):173: MD004 Unordered list style'
     let l:pattern = ':\(\d*\): \(.*\)$'
@@ -19,7 +31,7 @@ endfunction
 
 call ale#linter#Define('markdown', {
 \   'name': 'mdl',
-\   'executable': 'mdl',
-\   'command': 'mdl',
+\   'executable_callback': 'ale_linters#markdown#mdl#GetExecutable',
+\   'command_callback': 'ale_linters#markdown#mdl#GetCommand',
 \   'callback': 'ale_linters#markdown#mdl#Handle'
 \})
