@@ -321,6 +321,35 @@ function! s:ALEToggle() abort
     call ALEInitAuGroups()
 endfunction
 
+function! s:ALEToggleLinter(linter) abort
+    let l:filetype = &filetype
+
+    " We get the list of enabled linters for free by the above function.
+    let l:enabled_linters = deepcopy(ale#linter#Get(l:filetype))
+
+    " But have to build the list of available linters ourselves.
+    let l:all_linters = []
+    let l:linter_variable_list = []
+
+    for l:part in split(l:filetype, '\.')
+        let l:aliased_filetype = ale#linter#ResolveFiletype(l:part)
+        call extend(l:all_linters, ale#linter#GetAll(l:aliased_filetype))
+    endfor
+
+    let l:all_names = map(copy(l:all_linters), 'v:val[''name'']')
+    let l:enabled_names = map(copy(l:enabled_linters), 'v:val[''name'']')
+
+    if index(l:all_names, a:linter) < 0
+        echom '"' . a:linter . '" is not a valid linter.'
+        return
+    endif
+
+    if index(l:enabled_names, a:linter) < 0
+        execute
+    endif
+
+endfunction
+
 call ALEInitAuGroups()
 
 if g:ale_set_balloons
@@ -344,6 +373,7 @@ command! -bar ALEDetail :call ale#cursor#ShowCursorDetail()
 
 " Define commands for turning ALE on or off.
 command! -bar ALEToggle :call s:ALEToggle()
+command! -bar ALEToggleLinter :call s:ALEToggleLinter()
 command! -bar ALEEnable :if !g:ale_enabled | ALEToggle | endif
 command! -bar ALEDisable :if g:ale_enabled | ALEToggle | endif
 
