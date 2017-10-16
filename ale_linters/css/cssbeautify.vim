@@ -3,13 +3,16 @@
 
 call ale#Set('css_cssbeautify_executable', 'css-beautify')
 call ale#Set('css_cssbeautify_options', '')
+call ale#Set('css_cssbeautify_style', '(&expandtab ? "--indent-size ".shiftwidth() : "--indent-with-tabs ")')
 
 function! ale_linters#css#cssbeautify#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'css_cssbeautify_executable')
 endfunction
 
 function! ale_linters#css#cssbeautify#GetCommand(buffer) abort
+    let l:style = eval(ale#Var(a:buffer, 'css_cssbeautify_style'))
     return ale#Escape(ale_linters#css#cssbeautify#GetExecutable(a:buffer))
+    \   . (!empty(l:style) ? ' ' . l:style : '')
     \   . ' ' . ale#Var(a:buffer, 'css_cssbeautify_options')
     \   . ' < %t | diff --old-group-format="%df: warning: cssbeautify style: " --unchanged-line-format="" %t -'
 endfunction
