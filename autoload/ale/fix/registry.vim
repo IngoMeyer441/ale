@@ -44,7 +44,7 @@ let s:default_registry = {
 \   },
 \   'prettier': {
 \       'function': 'ale#fixers#prettier#Fix',
-\       'suggested_filetypes': ['javascript', 'typescript', 'json', 'css', 'scss'],
+\       'suggested_filetypes': ['javascript', 'typescript', 'json', 'css', 'scss', 'less'],
 \       'description': 'Apply prettier to a file.',
 \   },
 \   'prettier_eslint': {
@@ -106,6 +106,11 @@ let s:default_registry = {
 \       'function': 'ale#fixers#gofmt#Fix',
 \       'suggested_filetypes': ['go'],
 \       'description': 'Fix Go files with go fmt.',
+\   },
+\   'tslint': {
+\       'function': 'ale#fixers#tslint#Fix',
+\       'suggested_filetypes': ['typescript'],
+\       'description': 'Fix typescript files with tslint --fix.',
 \   },
 \}
 
