@@ -108,19 +108,29 @@ function! s:HandleExit(job_id, exit_code) abort
         let l:job_info.output = readfile(l:job_info.file_to_read)
     endif
 
+    let l:chain_callback = get(l:job_info, 'chain_with', v:null)
+
     " Use the output of the job for changing the file if it isn't empty,
     " otherwise skip this job and use the input from before.
-    let l:input = !empty(l:job_info.output)
+    "
+    " We'll use the input from before for chained commands.
+    let l:input = l:chain_callback is v:null && !empty(l:job_info.output)
     \   ? l:job_info.output
     \   : l:job_info.input
+
+    let l:next_index = l:chain_callback is v:null
+    \   ? l:job_info.callback_index + 1
+    \   : l:job_info.callback_index
 
     call s:RunFixer({
     \   'buffer': l:buffer,
     \   'fix_whole_buffer': 1,
     \   'line_range': [],
     \   'input': l:input,
+    \   'output': l:job_info.output,
     \   'callback_list': l:job_info.callback_list,
-    \   'callback_index': l:job_info.callback_index + 1,
+    \   'callback_index': l:next_index,
+    \   'chain_callback': l:chain_callback,
     \})
 endfunction
 
@@ -174,6 +184,26 @@ function! s:RunJob(options) abort
     let l:input = a:options.input
     let l:output_stream = a:options.output_stream
     let l:read_temporary_file = a:options.read_temporary_file
+    let l:chain_with = a:options.chain_with
+
+    if empty(l:command)
+        " If there's nothing further to chain the command with, stop here.
+        if l:chain_with is v:null
+            return 0
+        endif
+
+        " If there's another chained callback to run, then run that.
+        call s:RunFixer({
+        \   'buffer': l:buffer,
+        \   'input': l:input,
+        \   'callback_index': a:options.callback_index,
+        \   'callback_list': a:options.callback_list,
+        \   'chain_callback': l:chain_with,
+        \   'output': [],
+        \})
+
+        return 1
+    endif
 
     let [l:temporary_file, l:command] = ale#command#FormatCommand(l:buffer, l:command, 1)
     call s:CreateTemporaryFileForJob(l:buffer, l:temporary_file, l:input)
@@ -188,8 +218,9 @@ function! s:RunJob(options) abort
     \   'buffer': l:buffer,
     \   'input': l:input,
     \   'output': [],
-    \   'callback_list': a:options.callback_list,
+    \   'chain_with': l:chain_with,
     \   'callback_index': a:options.callback_index,
+    \   'callback_list': a:options.callback_list,
     \}
 
     if l:read_temporary_file
@@ -254,18 +285,29 @@ function! s:RunFixer(options) abort
     let l:line_range = a:options.line_range
     let l:input = a:options.input
     let l:index = a:options.callback_index
+    let l:chain_callback = get(a:options, 'chain_callback', v:null)
 
     while len(a:options.callback_list) > l:index
-        let l:Function = a:options.callback_list[l:index]
+        let l:Function = l:chain_callback isnot v:null
+        \   ? ale#util#GetFunction(l:chain_callback)
+        \   : a:options.callback_list[l:index]
 
-        if ale#util#FunctionArgCount(l:Function) == 1
-            let l:result = call(l:Function, [l:buffer])
-        elseif ale#util#FunctionArgCount(l:Function) == 2
-            let l:result = call(l:Function, [l:buffer, copy(l:input)])
+        if l:chain_callback isnot v:null
+            " Chained commands accept (buffer, output, [input])
+            let l:result = ale#util#FunctionArgCount(l:Function) == 2
+            \   ? call(l:Function, [l:buffer, a:options.output])
+            \   : call(l:Function, [l:buffer, a:options.output, copy(l:input)])
         else
-            let l:result = call(l:Function, [l:buffer, copy(l:input),
-                                         \   l:fix_whole_buffer,
-                                         \   copy(l:line_range)])
+            " Commands accept (buffer, [input], [line_range])
+            if ale#util#FunctionArgCount(l:Function) == 1
+                let l:result = call(l:Function, [l:buffer])
+            elseif ale#util#FunctionArgCount(l:Function) == 2
+                let l:result = call(l:Function, [l:buffer, copy(l:input)])
+            else
+                let l:result = call(l:Function, [l:buffer, copy(l:input),
+                                             \   l:fix_whole_buffer,
+                                             \   copy(l:line_range)])
+            endif
         endif
 
         if type(l:result) == type(0) && l:result == 0
@@ -281,6 +323,7 @@ function! s:RunFixer(options) abort
             \   'input': l:input,
             \   'output_stream': get(l:result, 'output_stream', 'stdout'),
             \   'read_temporary_file': get(l:result, 'read_temporary_file', 0),
+            \   'chain_with': get(l:result, 'chain_with', v:null),
             \   'callback_list': a:options.callback_list,
             \   'callback_index': l:index,
             \})
@@ -299,18 +342,25 @@ function! s:RunFixer(options) abort
 endfunction
 
 function! s:GetCallbacks() abort
-    let l:fixers = ale#Var(bufnr(''), 'fixers')
-    let l:callback_list = []
+    if type(get(b:, 'ale_fixers')) is type([])
+        " Lists can be used for buffer-local variables only
+        let l:callback_list = b:ale_fixers
+    else
+        " buffer and global options can use dictionaries mapping filetypes to
+        " callbacks to run.
+        let l:fixers = ale#Var(bufnr(''), 'fixers')
+        let l:callback_list = []
 
-    for l:sub_type in split(&filetype, '\.')
-        let l:sub_type_callacks = get(l:fixers, l:sub_type, [])
+        for l:sub_type in split(&filetype, '\.')
+            let l:sub_type_callacks = get(l:fixers, l:sub_type, [])
 
-        if type(l:sub_type_callacks) == type('')
-            call add(l:callback_list, l:sub_type_callacks)
-        else
-            call extend(l:callback_list, l:sub_type_callacks)
-        endif
-    endfor
+            if type(l:sub_type_callacks) == type('')
+                call add(l:callback_list, l:sub_type_callacks)
+            else
+                call extend(l:callback_list, l:sub_type_callacks)
+            endif
+        endfor
+    endif
 
     if empty(l:callback_list)
         return []
@@ -364,11 +414,21 @@ function! ale#fix#Fix(...) abort range
         throw "fixing_flag must be either '' or 'save_file'"
     endif
 
-    let l:callback_list = s:GetCallbacks()
+    try
+        let l:callback_list = s:GetCallbacks()
+    catch /E700/
+        let l:function_name = join(split(split(v:exception, ':')[3]))
+        echom printf(
+        \   'There is no fixer named `%s`. Check :ALEFixSuggest',
+        \   l:function_name,
+        \)
+
+        return 0
+    endtry
 
     if empty(l:callback_list)
         if l:fixing_flag is# ''
-            echoerr 'No fixers have been defined. Try :ALEFixSuggest'
+            echom 'No fixers have been defined. Try :ALEFixSuggest'
         endif
 
         return 0
