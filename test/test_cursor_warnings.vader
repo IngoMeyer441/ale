@@ -89,6 +89,7 @@ After:
   let g:ale_buffer_info = {}
 
   unlet! g:output
+  unlet! b:ale_loclist_msg_format
 
   delfunction GetLastMessage
 
@@ -96,6 +97,11 @@ After:
   " we need to do for these tests is just make it so the last message isn't
   " carried over between test cases.
   echomsg ''
+
+  " Close the preview window if it's open.
+  if &filetype is# 'ale-preview'
+    noautocmd :q!
+  endif
 
 Given javascript(A Javscript file with warnings/errors):
   var x = 3 + 12345678
@@ -138,20 +144,21 @@ Execute(The message at the cursor should be shown on InsertLeave):
 Execute(ALEDetail should print 'detail' attributes):
   call cursor(1, 1)
 
-  redir => g:output
-    ALEDetail
-  redir END
+  ALEDetail
 
-  AssertEqual "\nEvery statement should end with a semicolon\nsecond line", g:output
+  AssertEqual
+  \ ['Every statement should end with a semicolon', 'second line'],
+  \ getline(1, '$')
 
 Execute(ALEDetail should print regular 'text' attributes):
   call cursor(2, 10)
 
-  redir => g:output
-    ALEDetail
-  redir END
+  ALEDetail
 
-  AssertEqual "\nInfix operators must be spaced.", g:output
+  " ALEDetail opens a window, so check the text in it.
+  AssertEqual
+  \ ['Infix operators must be spaced.'],
+  \ getline(1, '$')
 
 Execute(ALEDetail should not capitlise cursor messages):
   call cursor(3, 1)
@@ -206,3 +213,12 @@ Execute(The %code% and %ifcode% should be removed when there's no code):
   call ale#cursor#EchoCursorWarning()
 
   AssertEqual 'Some information', GetLastMessage()
+
+Execute(The buffer message format option should take precedence):
+  let g:ale_echo_msg_format = '%(code) %%s'
+  let b:ale_echo_msg_format = 'FOO %s'
+
+  call cursor(1, 14)
+  call ale#cursor#EchoCursorWarning()
+
+  AssertEqual 'FOO Some information', GetLastMessage()
