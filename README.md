@@ -17,8 +17,7 @@ back to a filesystem.
 In other words, this plugin allows you to lint while you type.
 
 In addition to linting support, ALE offers some support for fixing code with
-formatting tools, and completion via Language Server Protocol servers, or
-servers with similar enough protocols, like `tsserver`.
+formatting tools, and some Language Server Protocol and `tsserver` features.
 
 ## Table of Contents
 
@@ -27,6 +26,7 @@ servers with similar enough protocols, like `tsserver`.
     1. [Linting](#usage-linting)
     2. [Fixing](#usage-fixing)
     3. [Completion](#usage-completion)
+    4. [Go To Definition](#usage-go-to-definition)
 3. [Installation](#installation)
     1. [Installation with Vim package management](#standard-installation)
     2. [Installation with Pathogen](#installation-with-pathogen)
@@ -74,6 +74,7 @@ formatting.
 | -------- | ----- |
 | ASM | [gcc](https://gcc.gnu.org) |
 | Ansible | [ansible-lint](https://github.com/willthames/ansible-lint) |
+| API Blueprint | [drafter](https://github.com/apiaryio/drafter) |
 | AsciiDoc | [proselint](http://proselint.com/), [write-good](https://github.com/btford/write-good), [redpen](http://redpen.cc/)|
 | Awk | [gawk](https://www.gnu.org/software/gawk/)|
 | Bash | shell [-n flag](https://www.gnu.org/software/bash/manual/bash.html#index-set), [shellcheck](https://www.shellcheck.net/), [shfmt](https://github.com/mvdan/sh) |
@@ -221,6 +222,15 @@ let g:ale_completion_enabled = 1
 ```
 
 See `:help ale-completion` for more information.
+
+<a name="usage-go-to-definition"></a>
+
+### 2.iv Go To Definition
+
+ALE supports jumping to the definition of words under your cursor with the
+`:ALEGoToDefinition` command using any enabled LSP linters and `tsserver`.
+
+See `:help ale-go-to-definition` for more information.
 
 <a name="installation"></a>
 
