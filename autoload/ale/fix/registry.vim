@@ -59,6 +59,11 @@ let s:default_registry = {
 \       'description': 'Apply prettier-eslint to a file.',
 \       'aliases': ['prettier-eslint'],
 \   },
+\   'importjs': {
+\       'function': 'ale#fixers#importjs#Fix',
+\       'suggested_filetypes': ['javascript'],
+\       'description': 'automatic imports for javascript',
+\   },
 \   'puppetlint': {
 \       'function': 'ale#fixers#puppetlint#Fix',
 \       'suggested_filetypes': ['puppet'],
@@ -138,6 +143,11 @@ let s:default_registry = {
 \       'function': 'ale#fixers#hfmt#Fix',
 \       'suggested_filetypes': ['haskell'],
 \       'description': 'Fix Haskell files with hfmt.',
+\   },
+\   'brittany': {
+\       'function': 'ale#fixers#brittany#Fix',
+\       'suggested_filetypes': ['haskell'],
+\       'description': 'Fix Haskell files with brittany.',
 \   },
 \   'refmt': {
 \       'function': 'ale#fixers#refmt#Fix',
