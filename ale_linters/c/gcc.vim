@@ -2,7 +2,7 @@
 " Description: gcc linter for c files
 
 call ale#Set('c_gcc_executable', 'gcc')
-call ale#Set('c_gcc_options', '-std=c11 -Wall')
+call ale#Set('c_gcc_options', '')
 
 function! ale_linters#c#gcc#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_gcc_executable')

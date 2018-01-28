@@ -2,7 +2,7 @@
 " Description: clang linter (unix mode) for c files
 
 call ale#Set('c_clangunix_executable', 'clang')
-call ale#Set('c_clangunix_options', '-std=c11 -Wall')
+call ale#Set('c_clangunix_options', '')
 call ale#Set('c_clangunix_unix_include_directories', [expand('~/linux_include')])
 call ale#Set('c_clangunix_target', 'amd64-pc-linux-gcc')
 call ale#Set('c_clangunix_unix_options', '-Wno-unknown-pragmas -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')

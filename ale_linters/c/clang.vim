@@ -2,7 +2,7 @@
 " Description: clang linter for c files
 
 call ale#Set('c_clang_executable', 'clang')
-call ale#Set('c_clang_options', '-std=c11 -Wall')
+call ale#Set('c_clang_options', '')
 
 function! ale_linters#c#clang#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_clang_executable')

@@ -3,7 +3,7 @@
 
 call ale#Set('cpp_oclint_executable', 'oclint')
 call ale#Set('cpp_oclint_options', '')
-call ale#Set('cpp_oclint_compileflags', '-xc++ -std=c++14')
+call ale#Set('cpp_oclint_compileflags', '')
 
 function! ale_linters#cpp#oclint#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'cpp_oclint_executable')

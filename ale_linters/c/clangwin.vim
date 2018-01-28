@@ -2,7 +2,7 @@
 " Description: clang linter (windows mode) for c files
 
 call ale#Set('c_clangwin_executable', 'clang')
-call ale#Set('c_clangwin_options', '-std=c11 -Wall')
+call ale#Set('c_clangwin_options', '')
 call ale#Set('c_clangwin_windows_include_directories', [expand('~/win_include')])
 call ale#Set('c_clangwin_windows_options', '-Wno-unknown-pragmas --target=amd64-pc-windows-msvc -fms-compatibility-version=19 -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')
 call ale#Set('c_clangwin_enable', 0)
