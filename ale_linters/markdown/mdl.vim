@@ -1,5 +1,20 @@
-" Author: Steve Dignam <steve@dignam.xyz>
-" Description: Support for mdl, a markdown linter
+" Author: Steve Dignam <steve@dignam.xyz>, Josh Leeb-du Toit <joshleeb.com>
+" Description: Support for mdl, a markdown linter.
+
+call ale#Set('markdown_mdl_executable', 'mdl')
+call ale#Set('markdown_mdl_options', '')
+
+function! ale_linters#markdown#mdl#GetExecutable(buffer) abort
+    return ale#Var(a:buffer, 'markdown_mdl_executable')
+endfunction
+
+function! ale_linters#markdown#mdl#GetCommand(buffer) abort
+    let l:executable = ale_linters#markdown#mdl#GetExecutable(a:buffer)
+    let l:options = ale#Var(a:buffer, 'markdown_mdl_options')
+
+    return ale#Escape(l:executable)
+    \   . (!empty(l:options) ? ' ' . l:options : '')
+endfunction
 
 call ale#Set('markdown_mdl_executable', 'mdl')
 call ale#Set('markdown_mdl_options', '')
