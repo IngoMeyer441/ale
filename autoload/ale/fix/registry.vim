@@ -28,6 +28,12 @@ let s:default_registry = {
 \       'description': 'Apply prettier-standard to a file.',
 \       'aliases': ['prettier-standard'],
 \   },
+\   'elm-format': {
+\       'function': 'ale#fixers#elm_format#Fix',
+\       'suggested_filetypes': ['elm'],
+\       'description': 'Apply elm-format to a file.',
+\       'aliases': ['format'],
+\   },
 \   'eslint': {
 \       'function': 'ale#fixers#eslint#Fix',
 \       'suggested_filetypes': ['javascript', 'typescript'],
@@ -37,11 +43,6 @@ let s:default_registry = {
 \       'function': 'ale#fixers#mix_format#Fix',
 \       'suggested_filetypes': ['elixir'],
 \       'description': 'Apply mix format to a file.',
-\   },
-\   'format': {
-\       'function': 'ale#fixers#format#Fix',
-\       'suggested_filetypes': ['elm'],
-\       'description': 'Apply elm-format to a file.',
 \   },
 \   'isort': {
 \       'function': 'ale#fixers#isort#Fix',
