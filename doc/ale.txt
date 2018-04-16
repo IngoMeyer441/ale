@@ -106,6 +106,7 @@ CONTENTS                                                         *ale-contents*
       checkstyle..........................|ale-java-checkstyle|
       javac...............................|ale-java-javac|
       google-java-format..................|ale-java-google-java-format|
+      pmd.................................|ale-java-pmd|
     javascript............................|ale-javascript-options|
       eslint..............................|ale-javascript-eslint|
       flow................................|ale-javascript-flow|
@@ -141,6 +142,8 @@ CONTENTS                                                         *ale-contents*
       prettier............................|ale-markdown-prettier|
       textlint............................|ale-markdown-textlint|
       write-good..........................|ale-markdown-write-good|
+    mercury...............................|ale-mercury-options|
+      mmc.................................|ale-mercury-mmc|
     nroff.................................|ale-nroff-options|
       write-good..........................|ale-nroff-write-good|
     objc..................................|ale-objc-options|
@@ -177,6 +180,7 @@ CONTENTS                                                         *ale-contents*
       puppetlint..........................|ale-puppet-puppetlint|
     python................................|ale-python-options|
       autopep8............................|ale-python-autopep8|
+      black...............................|ale-python-black|
       flake8..............................|ale-python-flake8|
       isort...............................|ale-python-isort|
       mypy................................|ale-python-mypy|
@@ -185,6 +189,8 @@ CONTENTS                                                         *ale-contents*
       pylint..............................|ale-python-pylint|
       pyls................................|ale-python-pyls|
       yapf................................|ale-python-yapf|
+    qml...................................|ale-qml-options|
+      qmlfmt..............................|ale-qml-qmlfmt|
     r.....................................|ale-r-options|
       lintr...............................|ale-r-lintr|
     reasonml..............................|ale-reasonml-options|
@@ -338,7 +344,7 @@ Notes:
 * Haskell: `brittany`, `ghc`, `stack-ghc`, `stack-build`!!, `ghc-mod`, `stack-ghc-mod`, `hlint`, `hdevtools`, `hfmt`
 * HTML: `alex`!!, `HTMLHint`, `proselint`, `tidy`, `write-good`
 * Idris: `idris`
-* Java: `checkstyle`, `javac`, `google-java-format`
+* Java: `checkstyle`, `javac`, `google-java-format`, `PMD`
 * JavaScript: `eslint`, `flow`, `jscs`, `jshint`, `prettier`, `prettier-eslint`, `prettier-standard`, `standard`, `xo`
 * JSON: `fixjson`, `jsonlint`, `jq`, `prettier`
 * Kotlin: `kotlinc`, `ktlint`
@@ -350,6 +356,7 @@ Notes:
 * Make: `checkmake`
 * Markdown: `alex`!!, `markdownlint`!!, `mdl`, `prettier`, `proselint`, `redpen`, `remark-lint`, `textlint`, `vale`, `write-good`
 * MATLAB: `mlint`
+* Mercury: `mmc`!!
 * Nim: `nim check`!!
 * nix: `nix-instantiate`
 * nroff: `alex`!!, `proselint`, `write-good`
@@ -364,8 +371,8 @@ Notes:
 * proto: `protoc-gen-lint`
 * Pug: `pug-lint`
 * Puppet: `puppet`, `puppet-lint`
-* Python: `autopep8`, `flake8`, `isort`, `mypy`, `prospector`, `pycodestyle`, `pyls`, `pylint`!!, `yapf`
-* QML: `qmllint`
+* Python: `autopep8`, `black`, `flake8`, `isort`, `mypy`, `prospector`, `pycodestyle`, `pyls`, `pylint`!!, `yapf`
+* QML: `qmlfmt`, `qmllint`
 * R: `lintr`
 * ReasonML: `merlin`, `ols`, `refmt`
 * reStructuredText: `alex`!!, `proselint`, `redpen`, `rstcheck`, `vale`, `write-good`
@@ -375,10 +382,10 @@ Notes:
 * Rust: `cargo`!!, `rls`, `rustc` (see |ale-integration-rust|), `rustfmt`
 * SASS: `sass-lint`, `stylelint`
 * SCSS: `prettier`, `sass-lint`, `scss-lint`, `stylelint`
-* Scala: `scalac`, `scalastyle`
+* Scala: `fsc`, `scalac`, `scalastyle`
 * Slim: `slim-lint`
 * SML: `smlnj`
-* Solidity: `solhint, solium`
+* Solidity: `solhint`, `solium`
 * Stylus: `stylelint`
 * SQL: `sqlint`
 * Swift: `swiftlint`, `swiftformat`
@@ -1492,6 +1499,18 @@ g:ale_type_map                                                 *g:ale_type_map*
   Type maps can be set per-buffer with `b:ale_type_map`.
 
 
+g:ale_use_global_executables                     *g:ale_use_global_executables*
+
+  Type: |Number|
+  Default: not set
+
+  This option can be set to change the default for all `_use_global` options.
+  This option must be set before ALE is loaded, preferably in a vimrc file.
+
+  See |ale-integrations-local-executables| for more information on those
+  options.
+
+
 g:ale_virtualenv_dir_names                         *g:ale_virtualenv_dir_names*
 b:ale_virtualenv_dir_names                         *b:ale_virtualenv_dir_names*
 
@@ -1679,7 +1698,7 @@ g:ale_writegood_options                               *g:ale_writegood_options*
 g:ale_writegood_use_global                         *g:ale_writegood_use_global*
                                                    *b:ale_writegood_use_global*
   Type: |Number|
-  Default: `0`
+  Default: `get(g:, 'ale_use_global_executables', 0)`
 
   See |ale-integrations-local-executables|
 
@@ -1712,6 +1731,9 @@ If you prefer to use global executables for those tools, set the relevant
   let g:ale_python_flake8_executable = '/foo/bar/flake8'
   let g:ale_python_flake8_use_global = 1
 <
+
+|g:ale_use_global_executables| can be set to `1` in your vimrc file to make
+ALE use global executables for all linters by default.
 
 The option |g:ale_virtualenv_dir_names| controls the local virtualenv paths
 ALE will use to search for Python executables.
@@ -1862,6 +1884,9 @@ ALEInfoToClipboard                                         *ALEInfoToClipboard*
 
   The command `:ALEInfoToClipboard` can be used to output ALEInfo directly to
   your clipboard. This might not work on every machine.
+
+  `:ALEInfoToFile` will write the ALE runtime information to a given filename.
+  The filename works just like |:w|.
 
 
 ALEReset                                                             *ALEReset*
@@ -2066,6 +2091,13 @@ ale#linter#Define(filetype, linter)                       *ale#linter#Define()*
                            key is also set with a valid number for some other
                            buffer.
                          `vcol` - Defaults to `0`.
+
+                           If set to `1`, ALE will convert virtual column
+                           positions for `col` and `end_col` to byte column
+                           positions. If the buffer is changed in-between
+                           checking it and displaying the results, the
+                           calculated byte column positions will probably be
+                           wrong.
                          `type` - Defaults to `'E'`.
                          `nr` - Defaults to `-1`.
 

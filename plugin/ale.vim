@@ -259,9 +259,11 @@ command! -bar ALELint :call ale#Queue(0, 'lint_file')
 command! -bar ALEInfo :call ale#debugging#Info()
 " The same, but copy output to your clipboard.
 command! -bar ALEInfoToClipboard :call ale#debugging#InfoToClipboard()
+" Copy ALE information to a file.
+command! -bar -nargs=1 ALEInfoToFile :call ale#debugging#InfoToFile(<f-args>)
 
 " Fix problems in files.
-command! -bar -range=% ALEFix :<line1>,<line2>call ale#fix#Fix()
+command! -bar -range=% ALEFix :<line1>,<line2>call ale#fix#Fix(bufnr(''), '')
 " Suggest registered functions to use for fixing problems.
 command! -bar ALEFixSuggest :call ale#fix#registry#Suggest(&filetype)
 
