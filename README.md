@@ -28,6 +28,7 @@ formatting tools, and some Language Server Protocol and `tsserver` features.
     3. [Completion](#usage-completion)
     4. [Go To Definition](#usage-go-to-definition)
     5. [Find References](#usage-find-references)
+    6. [Hovering](#usage-hover)
 3. [Installation](#installation)
     1. [Installation with Vim package management](#standard-installation)
     2. [Installation with Pathogen](#installation-with-pathogen)
@@ -249,6 +250,15 @@ ALE supports finding references for words under your cursor with the
 `:ALEFindReferences` command using any enabled LSP linters and `tsserver`.
 
 See `:help ale-find-references` for more information.
+
+<a name="usage-hover"></a>
+
+### 2.vi Hovering
+
+ALE supports "hover" information for printing brief information about symbols
+at the cursor taken from LSP linters with the `ALEHover` command.
+
+See `:help ale-hover` for more information.
 
 <a name="installation"></a>
 
@@ -514,17 +524,21 @@ Will give you:
 ### 5.viii. How can I execute some code when ALE starts or stops linting?
 
 ALE runs its own [autocmd](http://vimdoc.sourceforge.net/htmldoc/autocmd.html)
-events when a lint or fix cycle are started and stopped. These events can be
-used to call arbitrary functions before and after ALE stops linting.
+events when a lint or fix cycle are started and stopped. There is also an event
+that runs when a linter job has been successfully started. These events can be
+used to call arbitrary functions during these respective parts of the ALE's
+operation.
 
 ```vim
 augroup YourGroup
     autocmd!
-    autocmd User ALELintPre  call YourFunction()
-    autocmd User ALELintPost call YourFunction()
+    autocmd User ALELintPre    call YourFunction()
+    autocmd User ALELintPost   call YourFunction()
 
-    autocmd User ALEFixPre   call YourFunction()
-    autocmd User ALEFixPost  call YourFunction()
+    autocmd User ALEJobStarted call YourFunction()
+
+    autocmd User ALEFixPre     call YourFunction()
+    autocmd User ALEFixPost    call YourFunction()
 augroup END
 ```
 
