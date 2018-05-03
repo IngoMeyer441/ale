@@ -16,7 +16,7 @@ function! ale_linters#c#oclint#GetCommand(buffer) abort
     "  headers in the same directory.
     return ale#Escape(ale_linters#c#oclint#GetExecutable(a:buffer))
     \   . ' ' . ale#Var(a:buffer, 'c_oclint_options') . ' %t '
-    \   . '-- -x c++ '
+    \   . '-- -xc '
     \   . '-iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h')) . ' '
     \   . ale#c#IncludeOptions(l:paths)
     \   . ale#Var(a:buffer, 'c_oclint_compileflags')
