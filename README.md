@@ -16,8 +16,18 @@ back to a filesystem.
 
 In other words, this plugin allows you to lint while you type.
 
-In addition to linting support, ALE offers some support for fixing code with
-formatting tools, and some Language Server Protocol and `tsserver` features.
+ALE offers support for fixing code with command line tools in a non-blocking
+manner with the `:ALEFix` feature, supporting tools in many languages, like
+`prettier`, `eslint`, `autopep8`, and more.
+
+ALE acts as a "language client" to support a variety of Language Server Protocol
+features, including:
+
+* Diagnostics (via Language Server Protocol linters)
+* Go To Definition (`:ALEGoToDefinition`)
+* Completion (`let g:ale_completion_enabled = 1`)
+* Finding references (`:ALEFindReferences`)
+* Hover information (`:ALEHover`)
 
 ## Table of Contents
 
@@ -116,7 +126,7 @@ formatting.
 | HTML | [alex](https://github.com/wooorm/alex) !!, [HTMLHint](http://htmlhint.com/), [proselint](http://proselint.com/), [tidy](http://www.html-tidy.org/), [write-good](https://github.com/btford/write-good) |
 | Idris | [idris](http://www.idris-lang.org/) |
 | Java | [checkstyle](http://checkstyle.sourceforge.net), [javac](http://www.oracle.com/technetwork/java/javase/downloads/index.html), [google-java-format](https://github.com/google/google-java-format), [PMD](https://pmd.github.io/) |
-| JavaScript | [eslint](http://eslint.org/), [flow](https://flowtype.org/), [jscs](http://jscs.info/), [jshint](http://jshint.com/), [prettier](https://github.com/prettier/prettier), [prettier-eslint](https://github.com/prettier/prettier-eslint), [prettier-standard](https://github.com/sheerun/prettier-standard), [standard](http://standardjs.com/), [xo](https://github.com/sindresorhus/xo)
+| JavaScript | [eslint](http://eslint.org/), [flow](https://flowtype.org/), [jscs](http://jscs.info/), [jshint](http://jshint.com/), [prettier](https://github.com/prettier/prettier), [prettier-eslint](https://github.com/prettier/prettier-eslint-cli), [prettier-standard](https://github.com/sheerun/prettier-standard), [standard](http://standardjs.com/), [xo](https://github.com/sindresorhus/xo)
 | JSON | [fixjson](https://github.com/rhysd/fixjson), [jsonlint](http://zaa.ch/jsonlint/), [jq](https://stedolan.github.io/jq/), [prettier](https://github.com/prettier/prettier) |
 | Kotlin | [kotlinc](https://kotlinlang.org) !!, [ktlint](https://ktlint.github.io) !! see `:help ale-integration-kotlin` for configuration instructions |
 | LaTeX | [alex](https://github.com/wooorm/alex) !!, [chktex](http://www.nongnu.org/chktex/), [lacheck](https://www.ctan.org/pkg/lacheck), [proselint](http://proselint.com/), [redpen](http://redpen.cc/), [vale](https://github.com/ValeLint/vale), [write-good](https://github.com/btford/write-good) |
@@ -238,7 +248,8 @@ See `:help ale-completion` for more information.
 ### 2.iv Go To Definition
 
 ALE supports jumping to the definition of words under your cursor with the
-`:ALEGoToDefinition` command using any enabled LSP linters and `tsserver`.
+`:ALEGoToDefinition` command using any enabled Language Server Protocol linters
+and `tsserver`.
 
 See `:help ale-go-to-definition` for more information.
 
@@ -247,7 +258,8 @@ See `:help ale-go-to-definition` for more information.
 ### 2.v Find References
 
 ALE supports finding references for words under your cursor with the
-`:ALEFindReferences` command using any enabled LSP linters and `tsserver`.
+`:ALEFindReferences` command using any enabled Language Server Protocol linters
+and `tsserver`.
 
 See `:help ale-find-references` for more information.
 
@@ -255,8 +267,9 @@ See `:help ale-find-references` for more information.
 
 ### 2.vi Hovering
 
-ALE supports "hover" information for printing brief information about symbols
-at the cursor taken from LSP linters with the `ALEHover` command.
+ALE supports "hover" information for printing brief information about symbols at
+the cursor taken from Language Server Protocol linters and `tsserver` with the
+`ALEHover` command.
 
 See `:help ale-hover` for more information.
 
