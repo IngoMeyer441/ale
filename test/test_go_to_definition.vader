@@ -11,12 +11,18 @@ Before:
   runtime autoload/ale/lsp.vim
   runtime autoload/ale/util.vim
 
-  function! ale#linter#StartLSP(buffer, linter, callback) abort
+  function! ale#lsp_linter#StartLSP(buffer, linter, callback) abort
     let g:Callback = a:callback
 
+    let l:conn = ale#lsp#NewConnection({})
+    let l:conn.id = 347
+    let l:conn.open_documents = {a:buffer : -1}
+
     return {
+    \ 'buffer': a:buffer,
     \ 'connection_id': 347,
     \ 'project_root': '/foo/bar',
+    \ 'language_id': 'python',
     \}
   endfunction
 
@@ -31,6 +37,7 @@ Before:
   endfunction
 
 After:
+  call ale#lsp#RemoveConnectionWithID(347)
   call ale#definition#SetMap({})
   call ale#test#RestoreDirectory()
   call ale#linter#Reset()
@@ -175,6 +182,28 @@ Execute(Other files should be jumped to for LSP definition responses):
   AssertEqual
   \ [
   \   'edit ' . fnameescape(ale#path#Simplify(g:dir . '/completion_dummy_file')),
+  \ ],
+  \ g:expr_list
+  AssertEqual [3, 7], getpos('.')[1:2]
+  AssertEqual {}, ale#definition#GetMap()
+
+Execute(Locations inside the same file should be jumped to without using :edit):
+  call ale#definition#SetMap({3: {'open_in_tab': 0}})
+  call ale#definition#HandleLSPResponse(
+  \ 1,
+  \ {
+  \   'id': 3,
+  \   'result': {
+  \     'uri': ale#path#ToURI(ale#path#Simplify(expand('%:p'))),
+  \     'range': {
+  \       'start': {'line': 2, 'character': 7},
+  \     },
+  \   },
+  \ }
+  \)
+
+  AssertEqual
+  \ [
   \ ],
   \ g:expr_list
   AssertEqual [3, 7], getpos('.')[1:2]
