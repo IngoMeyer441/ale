@@ -20,18 +20,6 @@ function! ale_linters#markdown#mdl#GetCommand(buffer) abort
     \   . (!empty(l:options) ? ' ' . l:options : '')
 endfunction
 
-call ale#Set('markdown_mdl_executable', 'mdl')
-call ale#Set('markdown_mdl_options', '')
-
-function! ale_linters#markdown#mdl#GetExecutable(buffer) abort
-    return ale#Var(a:buffer, 'markdown_mdl_executable')
-endfunction
-
-function! ale_linters#markdown#mdl#GetCommand(buffer) abort
-    return ale#Escape(ale_linters#markdown#mdl#GetExecutable(a:buffer))
-    \   . ' ' . ale#Var(a:buffer, 'markdown_mdl_options')
-endfunction
-
 function! ale_linters#markdown#mdl#Handle(buffer, lines) abort
     " matches: '(stdin):173: MD004 Unordered list style'
     let l:pattern = ':\(\d*\): \(.*\)$'
