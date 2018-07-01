@@ -317,7 +317,7 @@ function! s:RunFixer(options) abort
             \   ? call(l:Function, [l:buffer, a:options.output])
             \   : call(l:Function, [l:buffer, a:options.output, copy(l:input)])
         else
-            " Commands accept (buffer, [input], [line_range])
+            " Commands accept (buffer, [input], fix_whole_buffer, [line_range])
             if ale#util#FunctionArgCount(l:Function) == 1
                 let l:result = call(l:Function, [l:buffer])
             elseif ale#util#FunctionArgCount(l:Function) == 2
@@ -490,7 +490,7 @@ function! ale#fix#Fix(buffer, fixing_flag, ...) abort range
     \   'buffer': a:buffer,
     \   'fix_whole_buffer': l:fix_whole_buffer,
     \   'line_range': [a:firstline, a:lastline],
-    \   'input': g:ale_fix_buffer_data[l:buffer].lines_before,
+    \   'input': g:ale_fix_buffer_data[a:buffer].lines_before,
     \   'callback_index': 0,
     \   'callback_list': l:callback_list,
     \})
