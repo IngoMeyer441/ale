@@ -11,7 +11,7 @@ endfunction
 function! ale_linters#python#black#GetCommand(buffer) abort
     let l:options = eval(ale#Var(a:buffer, 'python_black_options'))
     return ale#Escape(ale_linters#python#black#GetExecutable(a:buffer))
-    \   . ' ' . l:options
+    \   . ' --fast ' . l:options
     \   . ' - < %t | diff --old-group-format="%df: warning: black style: " --unchanged-line-format="" %t -'
 endfunction
 
