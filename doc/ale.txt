@@ -26,6 +26,7 @@ CONTENTS                                                         *ale-contents*
       gawk................................|ale-awk-gawk|
     c.....................................|ale-c-options|
       clang...............................|ale-c-clang|
+      clangd..............................|ale-c-clangd|
       clang-format........................|ale-c-clangformat|
       clangtidy...........................|ale-c-clangtidy|
       cppcheck............................|ale-c-cppcheck|
@@ -76,6 +77,7 @@ CONTENTS                                                         *ale-contents*
     fish..................................|ale-fish-options|
     fortran...............................|ale-fortran-options|
       gcc.................................|ale-fortran-gcc|
+      language_server.....................|ale-fortran-language-server|
     fountain..............................|ale-fountain-options|
     fusionscript..........................|ale-fuse-options|
       fusion-lint.........................|ale-fuse-fusionlint|
@@ -98,6 +100,7 @@ CONTENTS                                                         *ale-contents*
     haskell...............................|ale-haskell-options|
       brittany............................|ale-haskell-brittany|
       ghc.................................|ale-haskell-ghc|
+      cabal-ghc...........................|ale-haskell-cabal-ghc|
       hdevtools...........................|ale-haskell-hdevtools|
       hfmt................................|ale-haskell-hfmt|
       stack-build.........................|ale-haskell-stack-build|
@@ -146,6 +149,7 @@ CONTENTS                                                         *ale-contents*
     markdown..............................|ale-markdown-options|
       mdl.................................|ale-markdown-mdl|
       prettier............................|ale-markdown-prettier|
+      remark-lint.........................|ale-markdown-remark-lint|
       textlint............................|ale-markdown-textlint|
       write-good..........................|ale-markdown-write-good|
     mercury...............................|ale-mercury-options|
@@ -332,7 +336,7 @@ Notes:
 * Awk: `gawk`
 * Bash: `language-server`, `shell` (-n flag), `shellcheck`, `shfmt`
 * Bourne Shell: `shell` (-n flag), `shellcheck`, `shfmt`
-* C: `cppcheck`, `cpplint`!!, `clang`, `clangtidy`!!, `clang-format`, `flawfinder`, `gcc`
+* C: `cppcheck`, `cpplint`!!, `clang`, `clangd`, `clangtidy`!!, `clang-format`, `flawfinder`, `gcc`
 * C++ (filetype cpp): `clang`, `clangcheck`!!, `clangtidy`!!, `clang-format`, `cppcheck`, `cpplint`!!, `cquery`, `flawfinder`, `gcc`
 * CUDA: `nvcc`!!
 * C#: `mcs`, `mcsc`!!
@@ -354,7 +358,7 @@ Notes:
 * Erb: `erb`, `erubi`, `erubis`
 * Erlang: `erlc`, `SyntaxErl`
 * Fish: `fish` (-n flag)
-* Fortran: `gcc`
+* Fortran: `gcc`, `language_server`
 * Fountain: `proselint`
 * FusionScript: `fusion-lint`
 * Git Commit Messages: `gitlint`
@@ -363,7 +367,7 @@ Notes:
 * GraphQL: `eslint`, `gqlint`, `prettier`
 * Haml: `haml-lint`
 * Handlebars: `ember-template-lint`
-* Haskell: `brittany`, `ghc`, `stack-ghc`, `stack-build`!!, `ghc-mod`, `stack-ghc-mod`, `hlint`, `hdevtools`, `hfmt`
+* Haskell: `brittany`, `ghc`, `cabal-ghc`, `stack-ghc`, `stack-build`!!, `ghc-mod`, `stack-ghc-mod`, `hlint`, `hdevtools`, `hfmt`
 * HTML: `alex`!!, `HTMLHint`, `proselint`, `tidy`, `write-good`
 * Idris: `idris`
 * Java: `checkstyle`, `javac`, `google-java-format`, `PMD`
@@ -447,14 +451,20 @@ have even saved your changes. ALE will check your code in the following
 circumstances, which can be configured with the associated options.
 
 * When you modify a buffer.                - |g:ale_lint_on_text_changed|
+* On leaving insert mode. (off by default) - |g:ale_lint_on_insert_leave|
 * When you open a new or modified buffer.  - |g:ale_lint_on_enter|
 * When you save a buffer.                  - |g:ale_lint_on_save|
 * When the filetype changes for a buffer.  - |g:ale_lint_on_filetype_changed|
 * If ALE is used to check code manually.   - |:ALELint|
 
-In addition to the above options, ALE can also check buffers for errors when
-you leave insert mode with |g:ale_lint_on_insert_leave|, which is off by
-default. It is worth reading the documentation for every option.
+                                                 *ale-lint-settings-on-startup*
+
+It is worth reading the documentation for every option. You should configure
+which events ALE will use before ALE is loaded, so it can optimize which
+autocmd commands to run. You can force autocmd commands to be reloaded with
+`:ALEDisable | ALEEnable`
+
+This also applies to the autocmd commands used for |g:ale_echo_cursor|.
 
                                                         *ale-lint-file-linters*
 
@@ -842,6 +852,9 @@ g:ale_echo_cursor                                           *g:ale_echo_cursor*
   this behaviour.
   The format of the message can be customizable in |g:ale_echo_msg_format|.
 
+  You should set this setting once before ALE is loaded, and restart Vim if
+  you want to change your preferences. See |ale-lint-settings-on-startup|.
+
 
 g:ale_echo_delay                                             *g:ale_echo_delay*
                                                              *b:ale_echo_delay*
@@ -1042,19 +1055,16 @@ g:ale_lint_on_enter                                       *g:ale_lint_on_enter*
   Type: |Number|
   Default: `1`
 
-  When this option is set to `1`, the |BufWinEnter| and |BufRead| events will
-  be used to apply linters when buffers are first opened. If this is not
-  desired, this variable can be set to `0` in your vimrc file to disable this
-  behaviour.
+  When this option is set to `1`, the |BufWinEnter| event will be used to
+  apply linters when buffers are first opened. If this is not desired, this
+  variable can be set to `0` in your vimrc file to disable this behavior.
 
   The |FileChangedShellPost| and |BufEnter| events will be used to check if
   files have been changed outside of Vim. If a file is changed outside of
   Vim, it will be checked when it is next opened.
 
-  A |BufWinLeave| event will be used to look for the |E924|, |E925|, or |E926|
-  errors after moving from a loclist or quickfix window to a new buffer. If
-  prompts for these errors are opened after moving to new buffers, then ALE
-  will automatically send the `<CR>` key needed to close the prompt.
+  You should set this setting once before ALE is loaded, and restart Vim if
+  you want to change your preferences. See |ale-lint-settings-on-startup|.
 
 
 g:ale_lint_on_filetype_changed                 *g:ale_lint_on_filetype_changed*
@@ -1062,14 +1072,13 @@ g:ale_lint_on_filetype_changed                 *g:ale_lint_on_filetype_changed*
   Type: |Number|
   Default: `1`
 
-  This option will cause ALE to run whenever the filetype is changed. A short
-  delay will be used before linting will be done, so the filetype can be
-  changed quickly several times in a row, but resulting in only one lint
-  cycle.
+  This option will cause ALE to run when the filetype for a file is changed
+  after a buffer has first been loaded. A short delay will be used before
+  linting will be done, so the filetype can be changed quickly several times
+  in a row, but resulting in only one lint cycle.
 
-  If |g:ale_lint_on_enter| is set to `0`, then ALE will not lint a file when
-  the filetype is initially set. Otherwise ALE would still lint files when
-  buffers are opened, and the option for doing so is turned off.
+  You should set this setting once before ALE is loaded, and restart Vim if
+  you want to change your preferences. See |ale-lint-settings-on-startup|.
 
 
 g:ale_lint_on_save                                         *g:ale_lint_on_save*
@@ -1087,17 +1096,22 @@ g:ale_lint_on_save                                         *g:ale_lint_on_save*
 g:ale_lint_on_text_changed                         *g:ale_lint_on_text_changed*
 
   Type: |String|
-  Default: `always`
+  Default: `'always'`
 
-  By default, ALE will check files with the various supported programs when
-  text is changed by using the |TextChanged| event. If this behaviour is not
-  desired, then this option can be disabled by setting it to `never`. The
-  |g:ale_lint_delay| variable will be used to set a |timer_start()| on a
-  delay, and each change to a file will continue to call |timer_stop()| and
-  |timer_start()| repeatedly until the timer ticks by, and the linters will be
-  run. The checking of files will run in the background, so it should not
-  inhibit editing files. This option can also be set to `insert` or `normal`
-  to lint when text is changed only in insert or normal mode respectively.
+  This option controls how ALE will check your files as you make changes.
+  The following values can be used.
+
+  `'always'`, `'1'`, or `1` - Check buffers on |TextChanged| or |TextChangedI|.
+  `'normal'`            - Check buffers only on |TextChanged|.
+  `'insert'`            - Check buffers only on |TextChangedI|.
+  `'never'`, `'0'`, or `0`  - Never check buffers on changes.
+
+  ALE will check buffers after a short delay, with a timer which resets on
+  each change. The delay can be configured by adjusting the |g:ale_lint_delay|
+  variable.
+
+  You should set this setting once before ALE is loaded, and restart Vim if
+  you want to change your preferences. See |ale-lint-settings-on-startup|.
 
 
 g:ale_lint_on_insert_leave                         *g:ale_lint_on_insert_leave*
@@ -1115,6 +1129,9 @@ g:ale_lint_on_insert_leave                         *g:ale_lint_on_insert_leave*
     " Make using Ctrl+C do the same as Escape, to trigger autocmd commands
     inoremap <C-c> <Esc>
 <
+  You should set this setting once before ALE is loaded, and restart Vim if
+  you want to change your preferences. See |ale-lint-settings-on-startup|.
+
 
 g:ale_linter_aliases                                     *g:ale_linter_aliases*
                                                          *b:ale_linter_aliases*
@@ -1360,7 +1377,7 @@ g:ale_open_list                                               *g:ale_open_list*
 g:ale_pattern_options                                   *g:ale_pattern_options*
 
   Type: |Dictionary|
-  Default: `{}`
+  Default: undefined
 
   This option maps regular expression patterns to |Dictionary| values for
   buffer variables. This option can be set to automatically configure
@@ -1389,20 +1406,17 @@ g:ale_pattern_options                                   *g:ale_pattern_options*
 g:ale_pattern_options_enabled                   *g:ale_pattern_options_enabled*
 
   Type: |Number|
-  Default: `!empty(g:ale_pattern_options)`
+  Default: undefined
 
-  This option can be used for turning the behaviour of setting
-  |g:ale_pattern_options| on or off. By default, setting a single key for
-  |g:ale_pattern_options| will turn this option on, as long as the setting is
-  configured before ALE is loaded.
+  This option can be used for disabling pattern options. If set to `0`, ALE
+  will not set buffer variables per |g:ale_pattern_options|.
 
 
 g:ale_set_balloons                                         *g:ale_set_balloons*
                                                            *b:ale_set_balloons*
 
   Type: |Number|
-  Default: `(has('balloon_eval') && has('gui_running'))`
-           `|| (has('balloon_eval_term') && !has('gui_running'))`
+  Default: `has('balloon_eval') && has('gui_running')`
 
   When this option is set to `1`, balloon messages will be displayed for
   problems or hover information if available.
@@ -1411,6 +1425,12 @@ g:ale_set_balloons                                         *g:ale_set_balloons*
   there are no problems to show, and one of the linters is an LSP linter
   supporting "Hover" information, per |ale-hover|, then brief information
   about the symbol under the cursor will be displayed in a balloon.
+
+  Balloons can be enabled for terminal versions of Vim that support balloons,
+  but some versions of Vim will produce strange mouse behavior when balloons
+  are enabled. To configure balloons for your terminal, you should first
+  configure your |ttymouse| setting, and then consider setting
+  `g:ale_set_balloons` to `1` before ALE is loaded.
 
   `b:ale_set_balloons` can be set to `0` to disable balloons for a buffer.
   Balloons cannot be enabled for a specific buffer when not initially enabled
