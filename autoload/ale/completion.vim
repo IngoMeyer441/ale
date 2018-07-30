@@ -113,7 +113,7 @@ function! ale#completion#Filter(buffer, suggestions, prefix) abort
         for l:item in a:suggestions
             " A List of String values or a List of completion item Dictionaries
             " is accepted here.
-            let l:word = type(l:item) == type('') ? l:item : l:item.word
+            let l:word = type(l:item) is v:t_string ? l:item : l:item.word
 
             " Add suggestions if the suggestion starts with a case-insensitive
             " match for the prefix.
@@ -133,7 +133,7 @@ function! ale#completion#Filter(buffer, suggestions, prefix) abort
         " Remove suggestions with words in the exclusion List.
         call filter(
         \   l:filtered_suggestions,
-        \   'index(l:excluded_words, type(v:val) is type('''') ? v:val : v:val.word) < 0',
+        \   'index(l:excluded_words, type(v:val) is v:t_string ? v:val : v:val.word) < 0',
         \)
     endif
 
@@ -214,8 +214,10 @@ function! ale#completion#Show(response, completion_parser) abort
     " function, and then start omni-completion.
     let b:ale_completion_response = a:response
     let b:ale_completion_parser = a:completion_parser
+    " Replace completion options shortly before opening the menu.
     call s:ReplaceCompletionOptions()
-    call ale#util#FeedKeys("\<Plug>(ale_show_completion_menu)")
+
+    call timer_start(0, {-> ale#util#FeedKeys("\<Plug>(ale_show_completion_menu)")})
 endfunction
 
 function! s:CompletionStillValid(request_id) abort
@@ -315,10 +317,10 @@ function! ale#completion#ParseLSPCompletions(response) abort
 
     let l:item_list = []
 
-    if type(get(a:response, 'result')) is type([])
+    if type(get(a:response, 'result')) is v:t_list
         let l:item_list = a:response.result
-    elseif type(get(a:response, 'result')) is type({})
-    \&& type(get(a:response.result, 'items')) is type([])
+    elseif type(get(a:response, 'result')) is v:t_dict
+    \&& type(get(a:response.result, 'items')) is v:t_list
         let l:item_list = a:response.result.items
     endif
 
@@ -336,7 +338,9 @@ function! ale#completion#ParseLSPCompletions(response) abort
         endif
 
         " See :help complete-items for Vim completion kinds
-        if l:item.kind is s:LSP_COMPLETION_METHOD_KIND
+        if !has_key(l:item, 'kind')
+            let l:kind = 'v'
+        elseif l:item.kind is s:LSP_COMPLETION_METHOD_KIND
             let l:kind = 'm'
         elseif l:item.kind is s:LSP_COMPLETION_CONSTRUCTOR_KIND
             let l:kind = 'm'
