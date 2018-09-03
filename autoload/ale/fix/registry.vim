@@ -175,6 +175,21 @@ let s:default_registry = {
 \       'suggested_filetypes': ['haskell'],
 \       'description': 'Fix Haskell files with brittany.',
 \   },
+\   'hlint': {
+\       'function': 'ale#fixers#hlint#Fix',
+\       'suggested_filetypes': ['haskell'],
+\       'description': 'Refactor Haskell files with hlint.',
+\   },
+\   'stylish-haskell': {
+\       'function': 'ale#fixers#stylish_haskell#Fix',
+\       'suggested_filetypes': ['haskell'],
+\       'description': 'Refactor Haskell files with stylish-haskell.',
+\   },
+\   'ocamlformat': {
+\       'function': 'ale#fixers#ocamlformat#Fix',
+\       'suggested_filetypes': ['ocaml'],
+\       'description': 'Fix OCaml files with ocamlformat.',
+\   },
 \   'refmt': {
 \       'function': 'ale#fixers#refmt#Fix',
 \       'suggested_filetypes': ['reason'],
@@ -219,6 +234,11 @@ let s:default_registry = {
 \       'function': 'ale#fixers#dartfmt#Fix',
 \       'suggested_filetypes': ['dart'],
 \       'description': 'Fix Dart files with dartfmt.',
+\   },
+\   'xmllint': {
+\       'function': 'ale#fixers#xmllint#Fix',
+\       'suggested_filetypes': ['xml'],
+\       'description': 'Fix XML files with xmllint.',
 \   },
 \}
 
