@@ -32,7 +32,7 @@ function! s:GetBuildDirectory(buffer) abort
     return ale#c#FindCompileCommands(a:buffer)
 endfunction
 
-function! ale#fixers#clangtidy#Fix(buffer, lines, fix_whole_buffer, line_range) abort
+function! ale#fixers#clangtidy#Fix(buffer, done, lines, fix_whole_buffer, line_range) abort
     let l:checks = join(ale#Var(a:buffer, &filetype . '_clangtidy_checks'), ',')
     let l:build_dir = s:GetBuildDirectory(a:buffer)
 

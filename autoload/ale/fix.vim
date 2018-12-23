@@ -319,13 +319,13 @@ function! s:RunFixer(options) abort
             \   ? call(l:Function, [l:buffer, a:options.output])
             \   : call(l:Function, [l:buffer, a:options.output, copy(l:input)])
         else
-            " Commands accept (buffer, [input], fix_whole_buffer, [line_range])
+            " Commands accept (buffer, output, [input], fix_whole_buffer, [line_range])
             if ale#util#FunctionArgCount(l:Function) == 1
                 let l:result = call(l:Function, [l:buffer])
-            elseif ale#util#FunctionArgCount(l:Function) == 2
-                let l:result = call(l:Function, [l:buffer, copy(l:input)])
+            elseif ale#util#FunctionArgCount(l:Function) == 3
+                let l:result = call(l:Function, [l:buffer, v:null, copy(l:input)])
             else
-                let l:result = call(l:Function, [l:buffer, copy(l:input),
+                let l:result = call(l:Function, [l:buffer, v:null, copy(l:input),
                                              \   l:fix_whole_buffer,
                                              \   copy(l:line_range)])
             endif
