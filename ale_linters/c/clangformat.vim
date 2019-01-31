@@ -3,7 +3,7 @@
 
 call ale#Set('c_clangformat_executable', 'clang-format')
 call ale#Set('c_clangformat_options', '')
-call ale#Set('c_clangformat_style', '"BasedOnStyle: Google, ".(&textwidth ? "ColumnLimit: ".&textwidth.", " : "").(&expandtab ? "UseTab: Never, IndentWidth: ".shiftwidth() : "UseTab: Always")')
+call ale#Set('c_clangformat_style', '"{BasedOnStyle: Google, ".(&textwidth ? "ColumnLimit: ".&textwidth.", " : "").(&expandtab ? "UseTab: Never, IndentWidth: ".shiftwidth() : "UseTab: Always")."}"')
 
 function! ale_linters#c#clangformat#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_clangformat_executable')
@@ -13,7 +13,7 @@ function! ale_linters#c#clangformat#GetCommand(buffer) abort
     let l:style = eval(ale#Var(a:buffer, 'c_clangformat_style'))
     return ale#Escape(ale_linters#c#clangformat#GetExecutable(a:buffer))
     \   . ' --assume-filename="%s"'
-    \   . ' --style="{' . l:style . '}"'
+    \   . ' --style="' . l:style . '"'
     \   . ' ' . ale#Var(a:buffer, 'c_clangformat_options')
     \   . ' < %t | diff --old-group-format="%df: warning: clang-format style: " --unchanged-line-format="" %t -'
 endfunction
