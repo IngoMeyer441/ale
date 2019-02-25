@@ -181,7 +181,7 @@ function! s:RunJob(options) abort
     \   'log_output': 0,
     \})
 
-    return l:result._deferred_job_id != 0
+    return !empty(l:result)
 endfunction
 
 function! s:RunFixer(options) abort
@@ -210,9 +210,9 @@ function! s:RunFixer(options) abort
             if ale#util#FunctionArgCount(l:Function) == 1
                 let l:result = call(l:Function, [l:buffer])
             elseif ale#util#FunctionArgCount(l:Function) == 3
-                let l:result = call(l:Function, [l:buffer, v:null, copy(l:input)])
+                let l:result = call(l:Function, [l:buffer, copy(l:input)])
             else
-                let l:result = call(l:Function, [l:buffer, v:null, copy(l:input),
+                let l:result = call(l:Function, [l:buffer, copy(l:input),
                                              \   l:fix_whole_buffer,
                                              \   copy(l:line_range)])
             endif

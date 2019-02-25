@@ -79,7 +79,7 @@ endfunction
 
 call ale#linter#Define('python', {
 \   'name': 'mypy',
-\   'executable_callback': 'ale_linters#python#mypy#GetExecutable',
-\   'command_callback': 'ale_linters#python#mypy#GetCommand',
+\   'executable': function('ale_linters#python#mypy#GetExecutable'),
+\   'command': function('ale_linters#python#mypy#GetCommand'),
 \   'callback': 'ale_linters#python#mypy#Handle',
 \})
