@@ -710,3 +710,14 @@ function! ale#engine#GetLoclist(buffer) abort
 
     return g:ale_buffer_info[a:buffer].loclist
 endfunction
+
+" Given a buffer and line number, return the first warning for that line if
+" any.
+function! ale#engine#GetFirstWarning(buffer, linenumber) abort
+    for l:warning in ale#engine#GetLoclist(a:buffer)
+        if l:warning['lnum'] == a:linenumber
+            return l:warning['code']
+        endif
+    endfor
+    return '<none>'
+endfunction
