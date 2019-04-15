@@ -71,8 +71,10 @@ Notes:
   * `gcc`
   * `uncrustify`
 * Chef
+  * `cookstyle`
   * `foodcritic`
 * Clojure
+  * `clj-kondo`
   * `joker`
 * CloudFormation
   * `cfn-python-lint`
@@ -87,6 +89,7 @@ Notes:
   * `crystal`!!
 * CSS
   * `csslint`
+  * `fecs`
   * `prettier`
   * `stylelint`
 * Cucumber
@@ -152,6 +155,7 @@ Notes:
   * `golint`
   * `gometalinter`!!
   * `go mod`!!
+  * `gopls`
   * `gosimple`!!
   * `gotype`!!
   * `go vet`!!
@@ -184,6 +188,7 @@ Notes:
   * `terraform-fmt`
 * HTML
   * `alex`!!
+  * `fecs`
   * `HTMLHint`
   * `prettier`
   * `proselint`
@@ -195,6 +200,7 @@ Notes:
   * `ispc`!!
 * Java
   * `checkstyle`
+  * `eclipselsp`
   * `google-java-format`
   * `javac`
   * `javalsp`
@@ -202,6 +208,7 @@ Notes:
   * `uncrustify`
 * JavaScript
   * `eslint`
+  * `fecs`
   * `flow`
   * `jscs`
   * `jshint`
@@ -316,6 +323,7 @@ Notes:
 * Pony
   * `ponyc`
 * PowerShell
+  * `powershell`
   * `psscriptanalyzer`
 * Prolog
   * `swipl`
@@ -410,6 +418,7 @@ Notes:
 * SugarSS
   * `stylelint`
 * Swift
+  * `sourcekit-lsp`
   * `swiftformat`
   * `swiftlint`
 * Tcl
@@ -433,6 +442,7 @@ Notes:
   * `thrift`
 * TypeScript
   * `eslint`
+  * `fecs`
   * `prettier`
   * `tslint`
   * `tsserver`
