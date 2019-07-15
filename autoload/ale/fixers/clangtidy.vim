@@ -1,70 +1,57 @@
-" Author: tunnckoCore (Charlike Mike Reagent) <mameto2011@gmail.com>,
-"         w0rp <devw0rp@gmail.com>
-" Description: Integration between Prettier and ESLint.
+scriptencoding utf-8
+" Author: ObserverOfTime <chronobserver@disroot.org>
+" Description: Fixing C/C++ files with clang-tidy.
 
-call ale#Set(&filetype . '_clangtidy_executable', 'clang-tidy')
-" Set this option to check the checks clang-tidy will apply.
-call ale#Set(&filetype . '_clangtidy_checks', ['*'])
-" Set this option to manually set some options for clang-tidy.
-" This will disable compile_commands.json detection.
-call ale#Set(&filetype . '_clangtidy_options', '')
-call ale#Set('c_build_dir', '')
+function! s:set_variables() abort
+    let l:use_global = get(g:, 'ale_use_global_executables', 0)
 
-function! ale#fixers#clangtidy#GetExecutable(buffer) abort
-    return ale#Var(a:buffer, &filetype . '_clangtidy_executable')
+    for l:ft in ['c', 'cpp']
+        call ale#Set(l:ft . '_clangtidy_executable', 'clang-tidy')
+        call ale#Set(l:ft . '_clangtidy_use_global', l:use_global)
+        call ale#Set(l:ft . '_clangtidy_checks', ['*'])
+        call ale#Set(l:ft . '_clangtidy_options', '')
+        call ale#Set(l:ft . '_clangtidy_extra_options', '')
+        call ale#Set(l:ft . '_clangtidy_fix_errors', 1)
+    endfor
+
+    call ale#Set('c_build_dir', '')
 endfunction
 
-function! s:GetBuildDirectory(buffer) abort
-    " Don't include build directory for header files, as compile_commands.json
-    " files don't consider headers to be translation units, and provide no
-    " commands for compiling header files.
-    if expand('#' . a:buffer) =~# '\v\.(h|hpp)$'
-        return ''
-    endif
+call s:set_variables()
 
-    let l:build_dir = ale#Var(a:buffer, 'c_build_dir')
+function! ale#fixers#clangtidy#Var(buffer, name) abort
+    let l:ft = getbufvar(str2nr(a:buffer), '&filetype')
+    let l:ft = l:ft =~# 'cpp' ? 'cpp' : 'c'
 
-    " c_build_dir has the priority if defined
-    if !empty(l:build_dir)
-        return l:build_dir
-    endif
-
-    return ale#c#FindCompileCommands(a:buffer)
+    return ale#Var(a:buffer, l:ft . '_clangtidy_' . a:name)
 endfunction
 
-function! ale#fixers#clangtidy#Fix(buffer, done, lines, fix_whole_buffer, line_range) abort
-    let l:checks = join(ale#Var(a:buffer, &filetype . '_clangtidy_checks'), ',')
-    let l:build_dir = s:GetBuildDirectory(a:buffer)
-
-    " Get the extra options if we couldn't find a build directory.
+function! ale#fixers#clangtidy#GetCommand(buffer, fix_whole_buffer, line_range) abort
+    let l:checks = join(ale#fixers#clangtidy#Var(a:buffer, 'checks'), ',')
+    let l:extra_options = ale#fixers#clangtidy#Var(a:buffer, 'extra_options')
+    let l:build_dir = ale#c#GetBuildDirectory(a:buffer)
     let l:options = empty(l:build_dir)
-    \   ? ale#Var(a:buffer, &filetype . '_clangtidy_options')
-    \       . ' -iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h'))
-    \   : ''
-
-    if empty(l:build_dir)
-        let l:filename = tempname() . '_clangtidy_linted.cpp'
-        " Create a special filename, so we can detect it in the handler.
-        call ale#engine#ManageFile(a:buffer, l:filename)
-        let l:buflines = getbufline(a:buffer, 1, '$')
-        call ale#util#Writefile(a:buffer, l:buflines, l:filename)
-        let l:filename = ale#Escape(l:filename)
-    else
-        let l:filename = '%s'
-    endif
+    \   ? ale#fixers#clangtidy#Var(a:buffer, 'options') : ''
+    let l:fix_errors = ale#fixers#clangtidy#Var(a:buffer, 'fix_errors')
 
     let l:line_filter = a:fix_whole_buffer
     \   ? ''
-    \   : ' -line-filter=''[{"name":"%t","lines":[' . string(a:line_range) . ']}]'''
+    \   : '-line-filter=''[{"name":"%t","lines":[' . string(a:line_range) . ']}]'''
+
+    return ' -fix' . (l:fix_errors ? ' -fix-errors' : '')
+    \   . (empty(l:checks) ? '' : ' -checks=' . ale#Escape(l:checks))
+    \   . (empty(l:extra_options) ? '' : ' ' . l:extra_options)
+    \   . (empty(l:build_dir) ? '' : ' -p ' . ale#Escape(l:build_dir))
+    \   . (empty(l:line_filter) ? '' : ' ' . l:line_filter)
+    \   . ' %t' . (empty(l:options) ? '' : ' -- ' . l:options)
+endfunction
+
+function! ale#fixers#clangtidy#Fix(buffer, done, lines, fix_whole_buffer, line_range) abort
+    let l:executable = ale#fixers#clangtidy#Var(a:buffer, 'executable')
+    let l:command = ale#fixers#clangtidy#GetCommand(a:buffer)
 
     return {
-    \   'command': ale#Escape(ale#fixers#clangtidy#GetExecutable(a:buffer))
-    \       . (!empty(l:checks) ? ' -checks=' . ale#Escape(l:checks) : '')
-    \       . ' %t'
-    \       . ' -fix-errors'
-    \       . l:line_filter
-    \       . (!empty(l:build_dir) ? ' -p ' . ale#Escape(l:build_dir) : '')
-    \       . (!empty(l:options) ? ' -- ' . l:options : ''),
+    \   'command': ale#Escape(l:executable, a:fix_whole_buffer, a:line_range) . l:command,
     \   'read_temporary_file': 1,
     \}
 endfunction
