@@ -14,7 +14,9 @@ function! ale_linters#css#cssbeautify#GetCommand(buffer) abort
     return ale#Escape(ale_linters#css#cssbeautify#GetExecutable(a:buffer))
     \   . (!empty(l:style) ? ' ' . l:style : '')
     \   . ' ' . ale#Var(a:buffer, 'css_cssbeautify_options')
-    \   . ' < %t | diff --old-group-format="%df: warning: cssbeautify style: " --unchanged-line-format="" %t -'
+    \   . ' < %t | '
+    \   . 'diff --old-group-format="%df: warning: cssbeautify style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: cssbeautify style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#css#cssbeautify#Handle(buffer, lines) abort

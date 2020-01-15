@@ -12,7 +12,9 @@ function! ale_linters#cmake#cmakeformat#GetCommand(buffer) abort
     let l:options = eval(ale#Var(a:buffer, 'cmake_cmakeformat_options'))
     return ale#Escape(ale_linters#cmake#cmakeformat#GetExecutable(a:buffer))
     \   . ' '. l:options
-    \   . ' - < %t | diff --old-group-format="%df: warning: cmake_format style: " --unchanged-line-format="" %t -'
+    \   . ' - < %t | '
+    \   . 'diff --old-group-format="%df: warning: cmake_format style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: cmake_format style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#cmake#cmakeformat#Handle(buffer, lines) abort

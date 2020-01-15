@@ -15,7 +15,9 @@ function! ale_linters#c#clangformat#GetCommand(buffer) abort
     \   . ' --assume-filename="%s"'
     \   . ' --style="' . l:style . '"'
     \   . ' ' . ale#Var(a:buffer, 'c_clangformat_options')
-    \   . ' < %t | diff --old-group-format="%df: warning: clang-format style: " --unchanged-line-format="" %t -'
+    \   . ' < %t | '
+    \   . 'diff --old-group-format="%df: warning: clang-format style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: clang-format style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#c#clangformat#Handle(buffer, lines) abort

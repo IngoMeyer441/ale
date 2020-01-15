@@ -14,7 +14,9 @@ function! ale_linters#html#htmlbeautify#GetCommand(buffer) abort
     return ale#Escape(ale_linters#html#htmlbeautify#GetExecutable(a:buffer))
     \   . (!empty(l:style) ? ' ' . l:style : '')
     \   . ' ' . ale#Var(a:buffer, 'html_htmlbeautify_options')
-    \   . ' < %t | diff --old-group-format="%df: warning: htmlbeautify style: " --unchanged-line-format="" %t -'
+    \   . ' < %t | '
+    \   . 'diff --old-group-format="%df: warning: htmlbeautify style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: htmlbeautify style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#html#htmlbeautify#Handle(buffer, lines) abort

@@ -14,7 +14,9 @@ function! ale_linters#python#yapf#GetCommand(buffer) abort
     return ale#Escape(ale_linters#python#yapf#GetExecutable(a:buffer))
     \   . (!empty(l:style) ? ' --style="{' . l:style . '}"' : '')
     \   . ' ' . ale#Var(a:buffer, 'python_yapf_options')
-    \   . ' < %t | diff --old-group-format="%df: warning: yapf style: " --unchanged-line-format="" %t -'
+    \   . ' < %t | '
+    \   . 'diff --old-group-format="%df: warning: yapf style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: yapf style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#python#yapf#Handle(buffer, lines) abort

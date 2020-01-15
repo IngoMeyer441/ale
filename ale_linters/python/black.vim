@@ -12,7 +12,9 @@ function! ale_linters#python#black#GetCommand(buffer) abort
     let l:options = eval(ale#Var(a:buffer, 'python_black_options'))
     return ale#Escape(ale_linters#python#black#GetExecutable(a:buffer))
     \   . ' --fast ' . l:options
-    \   . ' - < %t | diff --old-group-format="%df: warning: black style: " --unchanged-line-format="" %t -'
+    \   . ' - < %t | '
+    \   . 'diff --old-group-format="%df: warning: black style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: black style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#python#black#Handle(buffer, lines) abort

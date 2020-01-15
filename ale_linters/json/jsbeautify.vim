@@ -14,7 +14,9 @@ function! ale_linters#json#jsbeautify#GetCommand(buffer) abort
     return ale#Escape(ale_linters#json#jsbeautify#GetExecutable(a:buffer))
     \   . (!empty(l:style) ? ' ' . l:style : '')
     \   . ' ' . ale#Var(a:buffer, 'json_jsbeautify_options')
-    \   . ' --stdin < %t | diff --old-group-format="%df: warning: js-beautify style: " --unchanged-line-format="" %t -'
+    \   . ' --stdin < %t | '
+    \   . 'diff --old-group-format="%df: warning: js-beautify style: " --unchanged-line-format="" %t - | '
+    \   . 'sed -E "s/([[:digit:]]+)(: warning: js-beautify style: )/\n\1\2/g"'
 endfunction
 
 function! ale_linters#json#jsbeautify#Handle(buffer, lines) abort
