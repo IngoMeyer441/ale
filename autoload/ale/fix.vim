@@ -143,8 +143,6 @@ function! s:HandleExit(job_info, buffer, job_output, data) abort
 
     call s:RunFixer({
     \   'buffer': a:buffer,
-    \   'fix_whole_buffer': 1,
-    \   'line_range': [],
     \   'input': l:input,
     \   'output': l:output,
     \   'callback_list': a:job_info.callback_list,
@@ -233,8 +231,6 @@ endfunction
 
 function! s:RunFixer(options) abort
     let l:buffer = a:options.buffer
-    let l:fix_whole_buffer = a:options.fix_whole_buffer
-    let l:line_range = a:options.line_range
     let l:input = a:options.input
     let l:index = a:options.callback_index
 
@@ -259,16 +255,10 @@ function! s:RunFixer(options) abort
         \   ? call(l:Function, [l:buffer, a:options.output])
         \   : call(l:Function, [l:buffer, a:options.output, copy(l:input)])
     else
-        " Commands accept (buffer, [input], fix_whole_buffer, [line_range])
-        if ale#util#FunctionArgCount(l:Function) == 1
-            let l:result = call(l:Function, [l:buffer])
-        elseif ale#util#FunctionArgCount(l:Function) == 2
-            let l:result = call(l:Function, [l:buffer, copy(l:input)])
-        else
-            let l:result = call(l:Function, [l:buffer, copy(l:input),
-                                         \   l:fix_whole_buffer,
-                                         \   copy(l:line_range)])
-        endif
+        " Regular fixer commands accept (buffer, [input])
+        let l:result = ale#util#FunctionArgCount(l:Function) == 1
+        \   ? call(l:Function, [l:buffer])
+        \   : call(l:Function, [l:buffer, copy(l:input)])
     endif
 
     call s:RunJob(l:result, {
@@ -377,8 +367,7 @@ endfunction
 " Accepts an optional argument for what to do when fixing.
 "
 " Returns 0 if no fixes can be applied, and 1 if fixing can be done.
-function! ale#fix#Fix(buffer, fixing_flag, ...) abort range
-    let l:fix_whole_buffer = (a:firstline == 1 && a:lastline == line('$'))
+function! ale#fix#Fix(buffer, fixing_flag, ...) abort
     if a:fixing_flag isnot# '' && a:fixing_flag isnot# 'save_file'
         throw "fixing_flag must be either '' or 'save_file'"
     endif
@@ -413,8 +402,6 @@ function! ale#fix#Fix(buffer, fixing_flag, ...) abort range
 
     call s:RunFixer({
     \   'buffer': a:buffer,
-    \   'fix_whole_buffer': l:fix_whole_buffer,
-    \   'line_range': [a:firstline, a:lastline],
     \   'input': g:ale_fix_buffer_data[a:buffer].lines_before,
     \   'callback_index': 0,
     \   'callback_list': l:callback_list,

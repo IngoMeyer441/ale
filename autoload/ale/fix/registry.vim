@@ -17,11 +17,6 @@ let s:default_registry = {
 \       'suggested_filetypes': ['python'],
 \       'description': 'Fix PEP8 issues with autopep8.',
 \   },
-\   'clangtidy': {
-\       'function': 'ale#fixers#clangtidy#Fix',
-\       'suggested_filetypes': ['c', 'cpp'],
-\       'description': 'Apply clangtidy to a file.',
-\   },
 \   'bibclean': {
 \       'function': 'ale#fixers#bibclean#Fix',
 \       'suggested_filetypes': ['bib'],

@@ -194,7 +194,7 @@ command! -bar ALEInfoToClipboard :call ale#debugging#InfoToClipboard()
 command! -bar -nargs=1 ALEInfoToFile :call ale#debugging#InfoToFile(<f-args>)
 
 " Fix problems in files.
-command! -bar -range=% -nargs=* -complete=customlist,ale#fix#registry#CompleteFixers ALEFix :<line1>,<line2>call ale#fix#Fix(bufnr(''), '', <f-args>)
+command! -bar -nargs=* -complete=customlist,ale#fix#registry#CompleteFixers ALEFix :call ale#fix#Fix(bufnr(''), '', <f-args>)
 " Suggest registered functions to use for fixing problems.
 command! -bar ALEFixSuggest :call ale#fix#registry#Suggest(&filetype)
 
