@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Support for html-beautify, a html style linter
 
 call ale#Set('html_htmlbeautify_executable', 'html-beautify')

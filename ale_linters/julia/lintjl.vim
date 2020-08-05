@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Lint.jl linter for julia files
 
 call ale#Set('julia_lintjl_julia_executable', 'julia')

@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: ifort linter for fortran files
 
 call ale#Set('fortran_ifort_executable', 'ifort')

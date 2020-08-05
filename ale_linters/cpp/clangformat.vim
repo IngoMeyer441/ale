@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Support for clangformat, a cpp style linter
 
 call ale#Set('cpp_clangformat_executable', 'clang-format')

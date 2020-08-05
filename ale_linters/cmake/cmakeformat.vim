@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Support for cmake_format, a cmake style linter
 
 call ale#Set('cmake_cmakeformat_executable', 'cmake-format')

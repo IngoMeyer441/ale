@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 
 call ale#Set('yaml_gitlabcilinter_executable', 'gitlab-ci-linter')
 call ale#Set('yaml_gitlabcilinter_options', '')

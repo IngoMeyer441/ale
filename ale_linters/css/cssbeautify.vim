@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Support for css-beautify, a css style linter
 
 call ale#Set('css_cssbeautify_executable', 'css-beautify')

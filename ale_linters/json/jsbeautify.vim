@@ -1,4 +1,4 @@
-" Author: Ingo Heimbach <i.heimbach@fz-juelich.de>
+" Author: Ingo Meyer <i.meyer@fz-juelich.de>
 " Description: Support for js-beautify, a javascript/json style linter
 
 call ale#Set('json_jsbeautify_executable', 'js-beautify')
