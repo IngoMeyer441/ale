@@ -246,7 +246,7 @@ A plugin might integrate its own checks with ALE like so: >
 
   function! WorkDone(buffer, results) abort
     " Send results to ALE after they have been collected.
-    call ale#other_source#ShowResults(buffer, 'some-name', a:results)
+    call ale#other_source#ShowResults(a:buffer, 'some-name', a:results)
   endfunction
 <
 
@@ -418,9 +418,12 @@ The |ALEComplete| command can be used to show completion suggestions manually,
 even when |g:ale_completion_enabled| is set to `0`. For manually requesting
 completion information with Deoplete, consult Deoplete's documentation.
 
-When working with TypeScript files, ALE by can support automatic imports
-from external modules. This behavior can be enabled by setting the
-|g:ale_completion_tsserver_autoimport| variable to `1`.
+ALE by can support automatic imports from external modules. This behavior can
+be enabled by setting the |g:ale_completion_autoimport| variable to `1`.
+
+When working with TypeScript files, ALE can remove warnings from your
+completions by setting the |g:ale_completion_tsserver_remove_warnings|
+variable to 1.
 
                                                *ale-completion-completeopt-bug*
 
@@ -681,8 +684,16 @@ g:ale_completion_enabled                             *g:ale_completion_enabled*
 
   See |ale-completion|
 
+g:ale_completion_tsserver_remove_warnings *g:ale_completion_tsserver_remove_warnings*
 
-g:ale_completion_tsserver_autoimport     *g:ale_completion_tsserver_autoimport*
+  Type: Number
+  Default: `0`
+
+  When this option is set to `0`, ALE will return all completion items,
+  including those that are a warning. Warnings can be excluded from completed
+  items by setting it to `1`.
+
+g:ale_completion_autoimport                       *g:ale_completion_autoimport*
 
   Type: Number
   Default: `0`
@@ -1290,7 +1301,7 @@ g:ale_linters                                                   *g:ale_linters*
   \   'help': [],
   \   'perl': ['perlcritic'],
   \   'perl6': [],
-  \   'python': ['flake8', 'mypy', 'pylint'],
+  \   'python': ['flake8', 'mypy', 'pylint', 'pyright'],
   \   'rust': ['cargo'],
   \   'spec': [],
   \   'text': [],
@@ -2578,6 +2589,7 @@ documented in additional help files.
     pylint................................|ale-python-pylint|
     pyls..................................|ale-python-pyls|
     pyre..................................|ale-python-pyre|
+    pyright...............................|ale-python-pyright|
     reorder-python-imports................|ale-python-reorder_python_imports|
     vulture...............................|ale-python-vulture|
     yapf..................................|ale-python-yapf|
@@ -2675,12 +2687,14 @@ documented in additional help files.
   vala....................................|ale-vala-options|
     uncrustify............................|ale-vala-uncrustify|
   verilog/systemverilog...................|ale-verilog-options|
+    hdl-checker...........................|ale-verilog-hdl-checker|
     iverilog..............................|ale-verilog-iverilog|
     verilator.............................|ale-verilog-verilator|
     vlog..................................|ale-verilog-vlog|
     xvlog.................................|ale-verilog-xvlog|
   vhdl....................................|ale-vhdl-options|
     ghdl..................................|ale-vhdl-ghdl|
+    hdl-checker...........................|ale-vhdl-hdl-checker|
     vcom..................................|ale-vhdl-vcom|
     xvhdl.................................|ale-vhdl-xvhdl|
   vim.....................................|ale-vim-options|

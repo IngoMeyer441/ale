@@ -91,11 +91,12 @@ function! ale#hover#HandleLSPResponse(conn_id, response) abort
 
         if type(l:result) is v:t_dict
             " If the result is an object, then it's markup content.
-            let l:result = [l:result.value]
+            let l:result = has_key(l:result, 'value') ? [l:result.value] : []
         endif
 
         if type(l:result) is v:t_list
             " Replace objects with text values.
+            call filter(l:result, '!(type(v:val) is v:t_dict && !has_key(v:val, ''value''))')
             call map(l:result, 'type(v:val) is v:t_string ? v:val : v:val.value')
             let l:str = join(l:result, "\n")
             let l:str = substitute(l:str, '^\s*\(.\{-}\)\s*$', '\1', '')
@@ -106,7 +107,7 @@ function! ale#hover#HandleLSPResponse(conn_id, response) abort
                 \&& ale#Var(l:options.buffer, 'set_balloons')
                     call balloon_show(l:str)
                 elseif get(l:options, 'truncated_echo', 0)
-                    call ale#cursor#TruncatedEcho(split(a:response.body.displayString, "\n")[0])
+                    call ale#cursor#TruncatedEcho(split(l:str, "\n")[0])
                 elseif g:ale_hover_to_preview
                     call ale#preview#Show(split(l:str, "\n"), {
                     \   'filetype': 'ale-preview.message',
