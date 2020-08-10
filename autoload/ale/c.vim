@@ -1,7 +1,7 @@
 " Author: gagbo <gagbobada@gmail.com>, w0rp <devw0rp@gmail.com>, roel0 <postelmansroel@gmail.com>
 " Description: Functions for integrating with C-family linters.
 
-call ale#Set('c_parse_makefile', 1)
+call ale#Set('c_parse_makefile', 0)
 call ale#Set('c_parse_compile_commands', 1)
 let s:sep = has('win32') ? '\' : '/'
 
@@ -9,13 +9,6 @@ let s:sep = has('win32') ? '\' : '/'
 let g:__ale_c_project_filenames = ['.git/HEAD', 'configure', 'Makefile', 'CMakeLists.txt']
 
 function! ale#c#GetBuildDirectory(buffer) abort
-    " Don't include build directory for header files, as compile_commands.json
-    " files don't consider headers to be translation units, and provide no
-    " commands for compiling header files.
-    if expand('#' . a:buffer) =~# '\v\.(h|hpp)$'
-        return ''
-    endif
-
     let l:build_dir = ale#Var(a:buffer, 'c_build_dir')
 
     " c_build_dir has the priority if defined
