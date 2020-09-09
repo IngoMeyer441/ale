@@ -36,8 +36,8 @@ endfunction
 
 call ale#linter#Define('cmake', {
 \   'name': 'cmakeformat',
-\   'executable_callback': 'ale_linters#cmake#cmakeformat#GetExecutable',
-\   'command_callback': 'ale_linters#cmake#cmakeformat#GetCommand',
+\   'executable': function('ale_linters#cmake#cmakeformat#GetExecutable'),
+\   'command': function('ale_linters#cmake#cmakeformat#GetCommand'),
 \   'callback': 'ale_linters#cmake#cmakeformat#Handle',
 \   'read_buffer': 0
 \})

@@ -38,8 +38,8 @@ endfunction
 
 call ale#linter#Define('json', {
 \   'name': 'jsbeautify',
-\   'executable_callback': 'ale_linters#json#jsbeautify#GetExecutable',
-\   'command_callback': 'ale_linters#json#jsbeautify#GetCommand',
+\   'executable': function('ale_linters#json#jsbeautify#GetExecutable'),
+\   'command': function('ale_linters#json#jsbeautify#GetCommand'),
 \   'callback': 'ale_linters#json#jsbeautify#Handle',
 \   'read_buffer': 0
 \})

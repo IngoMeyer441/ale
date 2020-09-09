@@ -23,7 +23,7 @@ endfunction
 call ale#linter#Define('cpp', {
 \   'name': 'mingw',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#cpp#mingw#GetExecutable',
+\   'executable': function('ale_linters#cpp#mingw#GetExecutable'),
 \   'command_chain': [
 \       {'callback': 'ale#c#GetMakeCommand', 'output_stream': 'stdout'},
 \       {'callback': 'ale_linters#cpp#mingw#GetCommand'},

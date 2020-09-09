@@ -39,8 +39,8 @@ endfunction
 
 call ale#linter#Define('cpp', {
 \   'name': 'clangformat',
-\   'executable_callback': 'ale_linters#cpp#clangformat#GetExecutable',
-\   'command_callback': 'ale_linters#cpp#clangformat#GetCommand',
+\   'executable': function('ale_linters#cpp#clangformat#GetExecutable'),
+\   'command': function('ale_linters#cpp#clangformat#GetCommand'),
 \   'callback': 'ale_linters#cpp#clangformat#Handle',
 \   'read_buffer': 0
 \})

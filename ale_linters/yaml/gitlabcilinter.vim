@@ -46,8 +46,8 @@ endfunction
 call ale#linter#Define('yaml', {
 \   'name': 'gitlabcilinter',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#yaml#gitlabcilinter#GetExecutable',
-\   'command_callback': 'ale_linters#yaml#gitlabcilinter#GetCommand',
+\   'executable': function('ale_linters#yaml#gitlabcilinter#GetExecutable'),
+\   'command': function('ale_linters#yaml#gitlabcilinter#GetCommand'),
 \   'callback': 'ale_linters#yaml#gitlabcilinter#Handle',
 \   'read_buffer': 0
 \})

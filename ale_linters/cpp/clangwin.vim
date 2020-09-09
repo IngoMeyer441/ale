@@ -37,7 +37,7 @@ endfunction
 call ale#linter#Define('cpp', {
 \   'name': 'clangwin',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#cpp#clangwin#GetExecutable',
-\   'command_callback': 'ale_linters#cpp#clangwin#GetCommand',
+\   'executable': function('ale_linters#cpp#clangwin#GetExecutable'),
+\   'command': function('ale_linters#cpp#clangwin#GetCommand'),
 \   'callback': 'ale#handlers#gcc#HandleGCCFormat',
 \})

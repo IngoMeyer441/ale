@@ -39,8 +39,8 @@ endfunction
 
 call ale#linter#Define('c', {
 \   'name': 'clangformat',
-\   'executable_callback': 'ale_linters#c#clangformat#GetExecutable',
-\   'command_callback': 'ale_linters#c#clangformat#GetCommand',
+\   'executable': function('ale_linters#c#clangformat#GetExecutable'),
+\   'command': function('ale_linters#c#clangformat#GetCommand'),
 \   'callback': 'ale_linters#c#clangformat#Handle',
 \   'read_buffer': 0
 \})

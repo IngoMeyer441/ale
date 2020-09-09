@@ -43,8 +43,8 @@ endfunction
 call ale#linter#Define('cpp', {
 \   'name': 'oclint',
 \   'output_stream': 'stdout',
-\   'executable_callback': 'ale_linters#cpp#oclint#GetExecutable',
-\   'command_callback': 'ale_linters#cpp#oclint#GetCommand',
+\   'executable': function('ale_linters#cpp#oclint#GetExecutable'),
+\   'command': function('ale_linters#cpp#oclint#GetCommand'),
 \   'callback': 'ale_linters#cpp#oclint#Handle',
 \   'read_buffer': 0,
 \})

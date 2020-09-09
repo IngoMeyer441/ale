@@ -37,8 +37,8 @@ endfunction
 call ale#linter#Define('fortran', {
 \   'name': 'ifort',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#fortran#ifort#GetExecutable',
-\   'command_callback': 'ale_linters#fortran#ifort#GetCommand',
+\   'executable': function('ale_linters#fortran#ifort#GetExecutable'),
+\   'command': function('ale_linters#fortran#ifort#GetCommand'),
 \   'callback': 'ale_linters#fortran#ifort#Handle',
 \   'read_buffer': 0,
 \})

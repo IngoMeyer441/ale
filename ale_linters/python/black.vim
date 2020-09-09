@@ -36,8 +36,8 @@ endfunction
 
 call ale#linter#Define('python', {
 \   'name': 'black',
-\   'executable_callback': 'ale_linters#python#black#GetExecutable',
-\   'command_callback': 'ale_linters#python#black#GetCommand',
+\   'executable': function('ale_linters#python#black#GetExecutable'),
+\   'command': function('ale_linters#python#black#GetCommand'),
 \   'callback': 'ale_linters#python#black#Handle',
 \   'read_buffer': 0
 \})

@@ -38,8 +38,8 @@ endfunction
 
 call ale#linter#Define('html', {
 \   'name': 'htmlbeautify',
-\   'executable_callback': 'ale_linters#html#htmlbeautify#GetExecutable',
-\   'command_callback': 'ale_linters#html#htmlbeautify#GetCommand',
+\   'executable': function('ale_linters#html#htmlbeautify#GetExecutable'),
+\   'command': function('ale_linters#html#htmlbeautify#GetCommand'),
 \   'callback': 'ale_linters#html#htmlbeautify#Handle',
 \   'read_buffer': 0
 \})

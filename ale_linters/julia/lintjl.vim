@@ -37,8 +37,8 @@ endfunction
 call ale#linter#Define('julia', {
 \   'name': 'lintjl',
 \   'output_stream': 'stdout',
-\   'executable_callback': 'ale_linters#julia#lintjl#GetExecutable',
-\   'command_callback': 'ale_linters#julia#lintjl#GetCommand',
+\   'executable': function('ale_linters#julia#lintjl#GetExecutable'),
+\   'command': function('ale_linters#julia#lintjl#GetCommand'),
 \   'callback': 'ale_linters#julia#lintjl#Handle',
 \   'lint_file': 1,
 \})

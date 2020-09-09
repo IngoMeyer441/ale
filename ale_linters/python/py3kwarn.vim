@@ -1,13 +1,8 @@
 " Author: keith <k@keith.so>
 " Description: py3kwarn for python files
 
-let g:ale_python_py3kwarn_executable =
-\   get(g:, 'ale_python_py3kwarn_executable', 'py3kwarn')
-
-let g:ale_python_py3kwarn_options =
-\   get(g:, 'ale_python_py3kwarn_options', '')
-
-let g:ale_python_py3kwarn_use_global = get(g:, 'ale_python_py3kwarn_use_global', 0)
+call ale#Set('python_py3kwarn_executable', 'py3kwarn')
+call ale#Set('python_py3kwarn_options', '')
 
 function! ale_linters#python#py3kwarn#GetExecutable(buffer) abort
     return ale#python#FindExecutable(a:buffer, 'python_py3kwarn', ['py3kwarn'])
@@ -54,8 +49,8 @@ endfunction
 
 call ale#linter#Define('python', {
 \   'name': 'py3kwarn',
-\   'executable_callback': 'ale_linters#python#py3kwarn#GetExecutable',
-\   'command_callback': 'ale_linters#python#py3kwarn#GetCommand',
+\   'executable': function('ale_linters#python#py3kwarn#GetExecutable'),
+\   'command': function('ale_linters#python#py3kwarn#GetCommand'),
 \   'callback': 'ale_linters#python#py3kwarn#Handle',
 \   'lint_file': 1,
 \})

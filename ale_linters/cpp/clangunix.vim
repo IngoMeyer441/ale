@@ -39,7 +39,7 @@ endfunction
 call ale#linter#Define('cpp', {
 \   'name': 'clangunix',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#cpp#clangunix#GetExecutable',
-\   'command_callback': 'ale_linters#cpp#clangunix#GetCommand',
+\   'executable': function('ale_linters#cpp#clangunix#GetExecutable'),
+\   'command': function('ale_linters#cpp#clangunix#GetCommand'),
 \   'callback': 'ale#handlers#gcc#HandleGCCFormat',
 \})

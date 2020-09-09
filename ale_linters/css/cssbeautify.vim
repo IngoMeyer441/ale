@@ -38,8 +38,8 @@ endfunction
 
 call ale#linter#Define('css', {
 \   'name': 'cssbeautify',
-\   'executable_callback': 'ale_linters#css#cssbeautify#GetExecutable',
-\   'command_callback': 'ale_linters#css#cssbeautify#GetCommand',
+\   'executable': function('ale_linters#css#cssbeautify#GetExecutable'),
+\   'command': function('ale_linters#css#cssbeautify#GetCommand'),
 \   'callback': 'ale_linters#css#cssbeautify#Handle',
 \   'read_buffer': 0
 \})

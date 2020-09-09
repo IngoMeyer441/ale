@@ -38,8 +38,8 @@ endfunction
 
 call ale#linter#Define('python', {
 \   'name': 'yapf',
-\   'executable_callback': 'ale_linters#python#yapf#GetExecutable',
-\   'command_callback': 'ale_linters#python#yapf#GetCommand',
+\   'executable': function('ale_linters#python#yapf#GetExecutable'),
+\   'command': function('ale_linters#python#yapf#GetCommand'),
 \   'callback': 'ale_linters#python#yapf#Handle',
 \   'read_buffer': 0
 \})

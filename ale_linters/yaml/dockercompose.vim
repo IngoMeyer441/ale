@@ -57,8 +57,8 @@ endfunction
 call ale#linter#Define('yaml', {
 \   'name': 'dockercompose',
 \   'output_stream': 'stderr',
-\   'executable_callback': 'ale_linters#yaml#dockercompose#GetExecutable',
-\   'command_callback': 'ale_linters#yaml#dockercompose#GetCommand',
+\   'executable': function('ale_linters#yaml#dockercompose#GetExecutable'),
+\   'command': function('ale_linters#yaml#dockercompose#GetCommand'),
 \   'callback': 'ale_linters#yaml#dockercompose#Handle',
 \   'read_buffer': 0
 \})
