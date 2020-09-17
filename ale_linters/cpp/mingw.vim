@@ -24,9 +24,6 @@ call ale#linter#Define('cpp', {
 \   'name': 'mingw',
 \   'output_stream': 'stderr',
 \   'executable': function('ale_linters#cpp#mingw#GetExecutable'),
-\   'command_chain': [
-\       {'callback': 'ale#c#GetMakeCommand', 'output_stream': 'stdout'},
-\       {'callback': 'ale_linters#cpp#mingw#GetCommand'},
-\   ],
+\   'command': {b -> ale#c#RunMakeCommand(b, function('ale_linters#cpp#mingw#GetCommand'))},
 \   'callback': 'ale#handlers#gcc#HandleGCCFormat',
 \})
