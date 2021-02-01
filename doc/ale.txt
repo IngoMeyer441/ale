@@ -228,8 +228,8 @@ A minimal configuration for a language server linter might look so. >
   \   'project_root': '/path/to/root_of_project',
   \})
 <
-For language servers that use a TCP socket connection, you should define the
-address to connect to instead. >
+For language servers that use a TCP or named pipe socket connection, you
+should define the address to connect to instead. >
 
   call ale#linter#Define('filetype_here', {
   \   'name': 'any_name_you_want',
@@ -1853,6 +1853,8 @@ g:ale_popup_menu_enabled                             *g:ale_popup_menu_enabled*
   capabilities in the right click mouse menu when there's a LSP server or
   tsserver available. See |ale-refactor|.
 
+  This feature is only supported in GUI versions of Vim.
+
   This setting must be set to `1` before ALE is loaded for this behavior
   to be enabled. See |ale-lint-settings-on-startup|.
 
@@ -2741,6 +2743,7 @@ documented in additional help files.
     hfmt..................................|ale-haskell-hfmt|
     hindent...............................|ale-haskell-hindent|
     hlint.................................|ale-haskell-hlint|
+    hls...................................|ale-haskell-hls|
     stack-build...........................|ale-haskell-stack-build|
     stack-ghc.............................|ale-haskell-stack-ghc|
     stylish-haskell.......................|ale-haskell-stylish-haskell|
@@ -2984,6 +2987,7 @@ documented in additional help files.
   terraform...............................|ale-terraform-options|
     terraform-fmt-fixer...................|ale-terraform-fmt-fixer|
     terraform.............................|ale-terraform-terraform|
+    terraform-ls..........................|ale-terraform-terraform-ls|
     terraform-lsp.........................|ale-terraform-terraform-lsp|
     tflint................................|ale-terraform-tflint|
   tex.....................................|ale-tex-options|
@@ -3852,7 +3856,7 @@ ale#linter#Define(filetype, linter)                       *ale#linter#Define()*
 
                          When this argument is set to `'socket'`, then the
                          linter will be defined as an LSP linter via a TCP
-                         socket connection. `address` must be set.
+                         or named pipe socket connection. `address` must be set.
 
                          ALE will not start a server automatically.
 
@@ -3877,7 +3881,10 @@ ale#linter#Define(filetype, linter)                       *ale#linter#Define()*
 
   `address`                A |String| representing an address to connect to,
                          or a |Funcref| accepting a buffer number and
-                         returning the |String|.
+                         returning the |String|. If the value contains a
+                         colon, it is interpreted as referring to a TCP
+                         socket; otherwise it is interpreted as the path of a
+                         named pipe.
 
                          The result can be computed with |ale#command#Run()|.
 
