@@ -43,6 +43,8 @@ Notes:
   * `shfmt`
 * Bats
   * `shellcheck`
+* Bazel
+  * `buildifier`
 * BibTeX
   * `bibclean`
 * Bourne Shell
@@ -329,6 +331,7 @@ Notes:
 * OCaml
   * `merlin` (see |ale-ocaml-merlin|)
   * `ocamlformat`
+  * `ocamllsp`
   * `ocp-indent`
   * `ols`
 * OpenApi
@@ -431,6 +434,7 @@ Notes:
 * Ruby
   * `brakeman`
   * `debride`
+  * `prettier`
   * `rails_best_practices`!!
   * `reek`
   * `rubocop`
