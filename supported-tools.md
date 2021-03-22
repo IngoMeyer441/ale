@@ -118,6 +118,7 @@ formatting.
 * Cucumber
   * [cucumber](https://cucumber.io/)
 * CUDA
+  * [clangd](https://clang.llvm.org/extra/clangd.html)
   * [nvcc](http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html)
 * Cypher
   * [cypher-lint](https://github.com/cleishm/libcypher-parser)
@@ -135,6 +136,8 @@ formatting.
   * [dartanalyzer](https://github.com/dart-lang/sdk/tree/master/pkg/analyzer_cli) :floppy_disk:
   * [dartfmt](https://github.com/dart-lang/sdk/tree/master/utils/dartfmt)
   * [language_server](https://github.com/natebosch/dart_language_server)
+* desktop
+  * [desktop-file-validate](https://www.freedesktop.org/wiki/Software/desktop-file-utils/)
 * Dhall
   * [dhall-format](https://github.com/dhall-lang/dhall-lang)
   * [dhall-freeze](https://github.com/dhall-lang/dhall-lang)
@@ -496,6 +499,9 @@ formatting.
   * [stylelint](https://github.com/stylelint/stylelint)
 * SugarSS
   * [stylelint](https://github.com/stylelint/stylelint)
+* Svelte
+  * [prettier](https://github.com/prettier/prettier)
+  * [svelteserver](https://github.com/sveltejs/language-tools/tree/master/packages/language-server)
 * Swift
   * [Apple swift-format](https://github.com/apple/swift-format)
   * [sourcekit-lsp](https://github.com/apple/sourcekit-lsp)
