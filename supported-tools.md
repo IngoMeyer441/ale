@@ -328,6 +328,7 @@ formatting.
   * nimpretty
 * nix
   * [nix-instantiate](http://nixos.org/nix/manual/#sec-nix-instantiate)
+  * [nixfmt](https://github.com/serokell/nixfmt)
   * [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt)
   * [rnix-lsp](https://github.com/nix-community/rnix-lsp)
 * nroff
@@ -353,6 +354,8 @@ formatting.
   * [ibm_validator](https://github.com/IBM/openapi-validator)
   * [prettier](https://github.com/prettier/prettier)
   * [yamllint](https://yamllint.readthedocs.io/)
+* Pascal
+  * [ptop](https://www.freepascal.org/tools/ptop.var)
 * Pawn
   * [uncrustify](https://github.com/uncrustify/uncrustify)
 * Perl
@@ -540,6 +543,9 @@ formatting.
   * [tslint](https://github.com/palantir/tslint)
   * [tsserver](https://github.com/Microsoft/TypeScript/wiki/Standalone-Server-%28tsserver%29)
   * typecheck
+* V
+  * [v](https://github.com/vlang/v/)
+  * [vfmt](https://github.com/vlang/v/)
 * VALA
   * [uncrustify](https://github.com/uncrustify/uncrustify)
   * [vala_lint](https://github.com/vala-lang/vala-lint) :floppy_disk:

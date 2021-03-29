@@ -319,6 +319,7 @@ Notes:
   * `nimpretty`
 * nix
   * `nix-instantiate`
+  * `nixfmt`
   * `nixpkgs-fmt`
   * `rnix-lsp`
 * nroff
@@ -344,6 +345,8 @@ Notes:
   * `ibm_validator`
   * `prettier`
   * `yamllint`
+* Pascal
+  * `ptop`
 * Pawn
   * `uncrustify`
 * Perl
@@ -531,6 +534,9 @@ Notes:
   * `tslint`
   * `tsserver`
   * `typecheck`
+* V
+  * `v`
+  * `vfmt`
 * VALA
   * `uncrustify`
   * `vala_lint`!!
