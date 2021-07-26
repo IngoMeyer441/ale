@@ -124,6 +124,7 @@ Notes:
   * `dafny`!!
 * Dart
   * `analysis_server`
+  * `dart-analyze`!!
   * `dart-format`!!
   * `dartanalyzer`!!
   * `dartfmt`!!
@@ -428,6 +429,7 @@ Notes:
   * `lintr`
   * `styler`
 * Racket
+  * `racket-langserver`
   * `raco`
 * Re:VIEW
   * `redpen`
