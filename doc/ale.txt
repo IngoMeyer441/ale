@@ -1,4 +1,4 @@
-*ale.txt*	Plugin to lint and fix files asynchronously
+*ale.txt* Plugin to lint and fix files asynchronously
 *ale*
 
 ALE - Asynchronous Lint Engine
@@ -460,7 +460,7 @@ integration should not be combined with ALE's own implementation.
 
 ALE additionally integrates with asyncomplete.vim for offering automatic
 completion data. ALE's asyncomplete source requires registration and should
-use the defaults provided by the|asyncomplete#sources#ale#get_source_options| function >
+use the defaults provided by the |asyncomplete#sources#ale#get_source_options| function >
 
   " Use ALE's function for asyncomplete defaults
   au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
@@ -2750,6 +2750,7 @@ documented in additional help files.
     gofmt.................................|ale-go-gofmt|
     golangci-lint.........................|ale-go-golangci-lint|
     golangserver..........................|ale-go-golangserver|
+    golines...............................|ale-go-golines|
     golint................................|ale-go-golint|
     gometalinter..........................|ale-go-gometalinter|
     gopls.................................|ale-go-gopls|
@@ -2933,6 +2934,7 @@ documented in additional help files.
     puppet-languageserver.................|ale-puppet-languageserver|
   purescript..............................|ale-purescript-options|
     purescript-language-server............|ale-purescript-language-server|
+    purs-tidy.............................|ale-purescript-tidy|
     purty.................................|ale-purescript-purty|
   pyrex (cython)..........................|ale-pyrex-options|
     cython................................|ale-pyrex-cython|
@@ -3053,6 +3055,7 @@ documented in additional help files.
     write-good............................|ale-text-write-good|
   thrift..................................|ale-thrift-options|
     thrift................................|ale-thrift-thrift|
+    thriftcheck...........................|ale-thrift-thriftcheck|
   typescript..............................|ale-typescript-options|
     deno..................................|ale-typescript-deno|
     eslint................................|ale-typescript-eslint|
