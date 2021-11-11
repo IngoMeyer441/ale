@@ -1,4 +1,4 @@
-" Author: Tomota Nakamura <https://github.com/tomotanakamura>
+" Author: Tomota Nakamura <https://github.com/tomotanakamura>, Ingo Meyer
 " Description: oclint linter for c files
 
 call ale#Set('c_oclint_executable', 'oclint')
@@ -10,16 +10,25 @@ function! ale_linters#c#oclint#GetExecutable(buffer) abort
 endfunction
 
 function! ale_linters#c#oclint#GetCommand(buffer) abort
-    let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
+    let l:compile_commands_option = substitute(
+                \ ale#handlers#cppcheck#GetCompileCommandsOptions(a:buffer),
+                \ '^--project',
+                \ '-p',
+                \ '')
+    let l:oclint_compileflags = ale#Var(a:buffer, 'c_oclint_compileflags')
+    let l:buffer_path_include = empty(l:compile_commands_option)
+    \   ? ale#handlers#cppcheck#GetBufferPathIncludeOptions(a:buffer)
+    \   : ''
 
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
-    return ale#Escape(ale_linters#c#oclint#GetExecutable(a:buffer))
-    \   . ' ' . ale#Var(a:buffer, 'c_oclint_options') . ' %t '
-    \   . '-- -xc '
-    \   . '-iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h')) . ' '
-    \   . ale#c#IncludeOptions(l:paths)
-    \   . ale#Var(a:buffer, 'c_oclint_compileflags')
+    return '%e'
+    \   . ale#Pad(ale#Var(a:buffer, 'c_oclint_options'))
+    \   . ale#Pad(l:compile_commands_option)
+    \   . ' %s'
+    \   . (!empty(l:oclint_compileflags) && !empty(l:buffer_path_include) ? ' --' : '')
+    \   . ale#Pad(l:oclint_compileflags)
+    \   . l:buffer_path_include
 endfunction
 
 function! ale_linters#c#oclint#Handle(buffer, lines) abort
@@ -46,5 +55,5 @@ call ale#linter#Define('c', {
 \   'executable': function('ale_linters#c#oclint#GetExecutable'),
 \   'command': function('ale_linters#c#oclint#GetCommand'),
 \   'callback': 'ale_linters#c#oclint#Handle',
-\   'read_buffer': 0,
+\   'lint_file': 1,
 \})

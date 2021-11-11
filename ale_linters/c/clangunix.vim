@@ -1,4 +1,4 @@
-" Author: Masahiro H https://github.com/mshr-h
+" Author: w0rp <devw0rp@gmail.com, Ingo Meyer
 " Description: clang linter (unix mode) for c files
 
 call ale#Set('c_clangunix_executable', 'clang')
@@ -17,22 +17,24 @@ function! ale_linters#c#clangunix#GetCommand(buffer) abort
         return ''
     endif
 
-    let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
     if !empty(ale#Var(a:buffer, 'c_clangunix_unix_include_directories'))
         let l:std_include_paths = '-isystem' . join(ale#Var(a:buffer, 'c_clangunix_unix_include_directories'), ' -isystem')
     else
         let l:std_include_paths = ''
     endif
+
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
-    return ale#Escape(ale_linters#c#clangunix#GetExecutable(a:buffer))
-    \   . ' -S -x c -fsyntax-only '
-    \   . '-iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h')) . ' '
-    \   . ale#c#IncludeOptions(l:paths) . ' '
-    \   . ale#Var(a:buffer, 'c_clangunix_options') . ' '
-    \   . '--target=' . ale#Var(a:buffer, 'c_clangunix_target') . ' '
-    \   . ale#Var(a:buffer, 'c_clangunix_unix_options') . ' '
-    \   . (!empty(l:std_include_paths) ? '-nostdinc ' . l:std_include_paths : '')
+    "
+    " `-o /dev/null` or `-o null` is needed to catch all errors,
+    " -fsyntax-only doesn't catch everything.
+    return '%e -S -x c'
+    \   . ' -o ' . g:ale#util#nul_file
+    \   . ' -iquote %s:h'
+    \   . ale#Pad(ale#Var(a:buffer, 'c_clangunix_options'))
+    \   . ale#Pad(ale#Var(a:buffer, 'c_clangunix_unix_options'))
+    \   . ' --target=' . ale#Var(a:buffer, 'c_clangunix_target')
+    \   . (!empty(l:std_include_paths) ? ' -nostdinc ' . l:std_include_paths : '')
     \   . ' -'
 endfunction
 
@@ -41,5 +43,5 @@ call ale#linter#Define('c', {
 \   'output_stream': 'stderr',
 \   'executable': function('ale_linters#c#clangunix#GetExecutable'),
 \   'command': function('ale_linters#c#clangunix#GetCommand'),
-\   'callback': 'ale#handlers#gcc#HandleGCCFormat',
+\   'callback': 'ale#handlers#gcc#HandleGCCFormatWithIncludes',
 \})

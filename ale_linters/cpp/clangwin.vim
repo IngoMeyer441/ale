@@ -1,10 +1,11 @@
-" Author: Masahiro H https://github.com/mshr-h
+" Author: w0rp <devw0rp@gmail.com, Ingo Meyer
 " Description: clang linter (windows mode) for cpp files
 
 call ale#Set('cpp_clangwin_executable', 'clang')
 call ale#Set('cpp_clangwin_options', '')
 call ale#Set('cpp_clangwin_windows_include_directories', [expand('~/win_include')])
-call ale#Set('cpp_clangwin_windows_options', '-Wno-unknown-pragmas --target=amd64-pc-windows-msvc -fms-compatibility-version=19 -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')
+call ale#Set('cpp_clangwin_target', 'amd64-pc-windows-msvc')
+call ale#Set('cpp_clangwin_windows_options', '-Wno-unknown-pragmas -fms-compatibility-version=19 -U__clang__ -U__clang_version__ -U__clang_major__ -U__clang_minor__ -U__clang_patchlevel__ -U__llvm__')
 call ale#Set('cpp_clangwin_enable', 0)
 
 function! ale_linters#cpp#clangwin#GetExecutable(buffer) abort
@@ -16,21 +17,24 @@ function! ale_linters#cpp#clangwin#GetCommand(buffer) abort
         return ''
     endif
 
-    let l:paths = ale#c#FindLocalHeaderPaths(a:buffer)
     if !empty(ale#Var(a:buffer, 'cpp_clangwin_windows_include_directories'))
         let l:std_include_paths = '-isystem' . join(ale#Var(a:buffer, 'cpp_clangwin_windows_include_directories'), ' -isystem')
     else
         let l:std_include_paths = ''
     endif
+
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
-    return ale#Escape(ale_linters#cpp#clangwin#GetExecutable(a:buffer))
-    \   . ' -S -x c++ -fsyntax-only '
-    \   . '-iquote ' . ale#Escape(fnamemodify(bufname(a:buffer), ':p:h')) . ' '
-    \   . ale#c#IncludeOptions(l:paths) . ' '
-    \   . ale#Var(a:buffer, 'cpp_clangwin_options') . ' '
-    \   . ale#Var(a:buffer, 'cpp_clangwin_windows_options') . ' '
-    \   . (!empty(l:std_include_paths) ? '-nostdinc ' . l:std_include_paths : '')
+    "
+    " `-o /dev/null` or `-o null` is needed to catch all errors,
+    " -fsyntax-only doesn't catch everything.
+    return '%e -S -x c++'
+    \   . ' -o ' . g:ale#util#nul_file
+    \   . ' -iquote %s:h'
+    \   . ale#Pad(ale#Var(a:buffer, 'cpp_clangwin_options'))
+    \   . ale#Pad(ale#Var(a:buffer, 'cpp_clangwin_windows_options'))
+    \   . ' --target=' . ale#Var(a:buffer, 'cpp_clangwin_target')
+    \   . (!empty(l:std_include_paths) ? ' -nostdinc ' . l:std_include_paths : '')
     \   . ' -'
 endfunction
 
@@ -39,5 +43,5 @@ call ale#linter#Define('cpp', {
 \   'output_stream': 'stderr',
 \   'executable': function('ale_linters#cpp#clangwin#GetExecutable'),
 \   'command': function('ale_linters#cpp#clangwin#GetCommand'),
-\   'callback': 'ale#handlers#gcc#HandleGCCFormat',
+\   'callback': 'ale#handlers#gcc#HandleGCCFormatWithIncludes',
 \})
