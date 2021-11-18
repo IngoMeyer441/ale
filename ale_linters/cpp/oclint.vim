@@ -10,25 +10,20 @@ function! ale_linters#cpp#oclint#GetExecutable(buffer) abort
 endfunction
 
 function! ale_linters#cpp#oclint#GetCommand(buffer) abort
-    let l:compile_commands_option = substitute(
-                \ ale#handlers#cppcheck#GetCompileCommandsOptions(a:buffer),
-                \ '^--project',
-                \ '-p',
-                \ '')
-    let l:oclint_compileflags = ale#Var(a:buffer, 'cpp_oclint_compileflags')
-    let l:buffer_path_include = empty(l:compile_commands_option)
-    \   ? ale#handlers#cppcheck#GetBufferPathIncludeOptions(a:buffer)
-    \   : ''
+    let l:oclint_compileflags = ''
+    let l:build_dir = ale#c#GetBuildDirectory(a:buffer)
+    if empty(l:build_dir)
+        let l:oclint_compileflags = ale#Var(a:buffer, 'cpp_oclint_compileflags')
+    endif
 
     " -iquote with the directory the file is in makes #include work for
     "  headers in the same directory.
     return '%e'
     \   . ale#Pad(ale#Var(a:buffer, 'cpp_oclint_options'))
-    \   . ale#Pad(l:compile_commands_option)
+    \   . (!empty(l:build_dir) ? ' -p=' . ale#Escape(l:build_dir) : '')
     \   . ' %s'
-    \   . (!empty(l:oclint_compileflags) && !empty(l:buffer_path_include) ? ' --' : '')
+    \   . (!empty(l:oclint_compileflags) ? ' --' : '')
     \   . ale#Pad(l:oclint_compileflags)
-    \   . l:buffer_path_include
 endfunction
 
 function! ale_linters#cpp#oclint#Handle(buffer, lines) abort
