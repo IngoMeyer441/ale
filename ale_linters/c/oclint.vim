@@ -1,5 +1,5 @@
-" Author: Tomota Nakamura <https://github.com/tomotanakamura>, Ingo Meyer
-" Description: oclint linter for c files
+" Author: Ingo Meyer <https://github.com/IngoMeyer441>
+" Description: oclint linter for c files, based on `clangtidy.vim`
 
 call ale#Set('c_oclint_executable', 'oclint')
 call ale#Set('c_oclint_options', '')
@@ -9,21 +9,21 @@ function! ale_linters#c#oclint#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_oclint_executable')
 endfunction
 
-function! ale_linters#c#oclint#GetCommand(buffer) abort
-    let l:oclint_compileflags = ''
+function! ale_linters#c#oclint#GetCommand(buffer, output) abort
+    let l:cflags = ''
     let l:build_dir = ale#c#GetBuildDirectory(a:buffer)
     if empty(l:build_dir)
-        let l:oclint_compileflags = ale#Var(a:buffer, 'c_oclint_compileflags')
+        let l:user_cflags = ale#Var(a:buffer, 'c_oclint_compileflags')
+        let l:auto_cflags = ale#c#GetCFlags(a:buffer, a:output)
+        let l:cflags = l:user_cflags . (!empty(l:user_cflags) ? ale#Pad(l:auto_cflags) : l:auto_cflags)
     endif
 
-    " -iquote with the directory the file is in makes #include work for
-    "  headers in the same directory.
     return '%e'
     \   . ale#Pad(ale#Var(a:buffer, 'c_oclint_options'))
     \   . (!empty(l:build_dir) ? ' -p=' . ale#Escape(l:build_dir) : '')
     \   . ' %s'
-    \   . (!empty(l:oclint_compileflags) ? ' --' : '')
-    \   . ale#Pad(l:oclint_compileflags)
+    \   . (!empty(l:cflags) ? ' --' : '')
+    \   . ale#Pad(l:cflags)
 endfunction
 
 function! ale_linters#c#oclint#Handle(buffer, lines) abort
@@ -48,7 +48,7 @@ call ale#linter#Define('c', {
 \   'name': 'oclint',
 \   'output_stream': 'stdout',
 \   'executable': function('ale_linters#c#oclint#GetExecutable'),
-\   'command': function('ale_linters#c#oclint#GetCommand'),
+\   'command': {b -> ale#c#RunMakeCommand(b, function('ale_linters#c#oclint#GetCommand'))},
 \   'callback': 'ale_linters#c#oclint#Handle',
 \   'lint_file': 1,
 \})
