@@ -74,6 +74,7 @@ formatting.
   * [cquery](https://github.com/cquery-project/cquery)
   * [flawfinder](https://www.dwheeler.com/flawfinder/)
   * [gcc](https://gcc.gnu.org/)
+  * [oclint](https://oclint.org/)
   * [uncrustify](https://github.com/uncrustify/uncrustify)
 * C#
   * [csc](http://www.mono-project.com/docs/about-mono/languages/csharp/) :floppy_disk: see:`help ale-cs-csc` for details and configuration
@@ -95,6 +96,7 @@ formatting.
   * [cquery](https://github.com/cquery-project/cquery)
   * [flawfinder](https://www.dwheeler.com/flawfinder/)
   * [gcc](https://gcc.gnu.org/)
+  * [oclint](https://oclint.org/)
   * [uncrustify](https://github.com/uncrustify/uncrustify)
 * Chef
   * [cookstyle](https://docs.chef.io/cookstyle.html)

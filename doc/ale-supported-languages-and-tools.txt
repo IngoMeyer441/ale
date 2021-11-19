@@ -65,6 +65,7 @@ Notes:
   * `cquery`
   * `flawfinder`
   * `gcc` (`cc`)
+  * `oclint`
   * `uncrustify`
 * C#
   * `csc`!!
@@ -86,6 +87,7 @@ Notes:
   * `cquery`
   * `flawfinder`
   * `gcc` (`cc`)
+  * `oclint`
   * `uncrustify`
 * Chef
   * `cookstyle`

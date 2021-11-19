@@ -4,6 +4,7 @@
 call ale#Set('c_oclint_executable', 'oclint')
 call ale#Set('c_oclint_options', '')
 call ale#Set('c_oclint_compileflags', '')
+call ale#Set('c_build_dir', '')
 
 function! ale_linters#c#oclint#GetExecutable(buffer) abort
     return ale#Var(a:buffer, 'c_oclint_executable')
@@ -12,6 +13,7 @@ endfunction
 function! ale_linters#c#oclint#GetCommand(buffer, output) abort
     let l:cflags = ''
     let l:build_dir = ale#c#GetBuildDirectory(a:buffer)
+
     if empty(l:build_dir)
         let l:user_cflags = ale#Var(a:buffer, 'c_oclint_compileflags')
         let l:auto_cflags = ale#c#GetCFlags(a:buffer, a:output)
@@ -31,6 +33,7 @@ function! ale_linters#c#oclint#Handle(buffer, lines) abort
     let l:pattern = '\v^(.+):(\d*):(\d*): (.+)$'
     let l:dir = expand('#' . a:buffer . ':p:h')
     let l:output = []
+
     for l:match in ale#util#GetMatches(a:lines, l:pattern)
         call add(l:output, {
         \   'filename': ale#path#GetAbsPath(l:dir, l:match[1]),
