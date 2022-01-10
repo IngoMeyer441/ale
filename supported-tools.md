@@ -146,9 +146,8 @@ formatting.
 * Dart
   * [analysis_server](https://github.com/dart-lang/sdk/tree/master/pkg/analysis_server)
   * [dart-analyze](https://github.com/dart-lang/sdk/tree/master/pkg/analyzer_cli) :floppy_disk:
-  * [dart-format](https://github.com/dart-lang/sdk/tree/master/utils/dartfmt) :floppy_disk:
-  * [dartanalyzer](https://github.com/dart-lang/sdk/tree/master/pkg/analyzer_cli) :floppy_disk:
-  * [dartfmt](https://github.com/dart-lang/sdk/tree/master/utils/dartfmt) :floppy_disk:
+  * [dart-format](https://github.com/dart-lang/sdk/tree/master/utils/dartfmt)
+  * [dartfmt](https://github.com/dart-lang/sdk/tree/master/utils/dartfmt)
   * [language_server](https://github.com/natebosch/dart_language_server)
 * desktop
   * [desktop-file-validate](https://www.freedesktop.org/wiki/Software/desktop-file-utils/)
@@ -158,10 +157,11 @@ formatting.
   * [dhall-lint](https://github.com/dhall-lang/dhall-lang)
 * Dockerfile
   * [dockerfile_lint](https://github.com/projectatomic/dockerfile_lint)
+  * [dprint](https://dprint.dev)
   * [hadolint](https://github.com/hadolint/hadolint)
 * Elixir
   * [credo](https://github.com/rrrene/credo)
-  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
+  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell) :warning:
   * [dialyxir](https://github.com/jeremyjh/dialyxir)
   * [dogma](https://github.com/lpil/dogma) :floppy_disk:
   * [elixir-ls](https://github.com/elixir-lsp/elixir-ls) :warning:
@@ -199,7 +199,7 @@ formatting.
   * [glslls](https://github.com/svenstaro/glsl-language-server)
 * Go
   * [bingo](https://github.com/saibing/bingo) :warning:
-  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
+  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell) :warning:
   * [go build](https://golang.org/cmd/go/) :warning: :floppy_disk:
   * [go mod](https://golang.org/cmd/go/) :warning: :floppy_disk:
   * [go vet](https://golang.org/cmd/vet/) :floppy_disk:
@@ -278,6 +278,7 @@ formatting.
 * JavaScript
   * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
   * [deno](https://deno.land/)
+  * [dprint](https://dprint.dev/)
   * [eslint](http://eslint.org/)
   * [fecs](http://fecs.baidu.com/)
   * [flow](https://flowtype.org/)
@@ -290,17 +291,18 @@ formatting.
   * [tsserver](https://github.com/Microsoft/TypeScript/wiki/Standalone-Server-%28tsserver%29)
   * [xo](https://github.com/sindresorhus/xo)
 * JSON
-  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
-  * [eslint](http://eslint.org/)
+  * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell) :warning:
+  * [dprint](https://dprint.dev)
+  * [eslint](http://eslint.org/) :warning:
   * [fixjson](https://github.com/rhysd/fixjson)
-  * [jq](https://stedolan.github.io/jq/)
+  * [jq](https://stedolan.github.io/jq/) :warning:
   * [jsonlint](https://github.com/zaach/jsonlint)
   * [prettier](https://github.com/prettier/prettier)
   * [spectral](https://github.com/stoplightio/spectral)
 * JSON5
-  * [eslint](http://eslint.org/)
+  * [eslint](http://eslint.org/) :warning:
 * JSONC
-  * [eslint](http://eslint.org/)
+  * [eslint](http://eslint.org/) :warning:
 * Jsonnet
   * [jsonnet-lint](https://jsonnet.org/learning/tools.html)
   * [jsonnetfmt](https://jsonnet.org/learning/tools.html)
@@ -548,6 +550,7 @@ formatting.
   * [solhint](https://github.com/protofire/solhint)
   * [solium](https://github.com/duaraghav8/Solium)
 * SQL
+  * [dprint](https://dprint.dev)
   * [pgformatter](https://github.com/darold/pgFormatter)
   * [sql-lint](https://github.com/joereynolds/sql-lint)
   * [sqlfmt](https://github.com/jackc/sqlfmt)
@@ -594,9 +597,12 @@ formatting.
 * Thrift
   * [thrift](http://thrift.apache.org/)
   * [thriftcheck](https://github.com/pinterest/thriftcheck)
+* TOML
+  * [dprint](https://dprint.dev)
 * TypeScript
   * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
   * [deno](https://deno.land/)
+  * [dprint](https://dprint.dev/)
   * [eslint](http://eslint.org/)
   * [fecs](http://fecs.baidu.com/)
   * [prettier](https://github.com/prettier/prettier)
@@ -645,6 +651,7 @@ formatting.
   * [prettier](https://github.com/prettier/prettier)
   * [spectral](https://github.com/stoplightio/spectral)
   * [swaglint](https://github.com/byCedric/swaglint)
+  * [yaml-language-server](https://github.com/redhat-developer/yaml-language-server)
   * [yamlfix](https://lyz-code.github.io/yamlfix)
   * [yamllint](https://yamllint.readthedocs.io/)
 * YANG
