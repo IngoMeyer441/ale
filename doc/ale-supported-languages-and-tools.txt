@@ -52,6 +52,8 @@ Notes:
   * `buildifier`
 * BibTeX
   * `bibclean`
+* BitBake
+  * `oelint-adv`
 * Bourne Shell
   * `shell` (-n flag)
   * `shellcheck`
@@ -105,6 +107,7 @@ Notes:
   * `cfn-python-lint`
 * CMake
   * `cmake-format`
+  * `cmake-lint`
   * `cmakelint`
 * CoffeeScript
   * `coffee`
@@ -630,6 +633,8 @@ Notes:
   * `prettier`
   * `vls`
   * `volar`
+* WGSL
+  * `naga`
 * XHTML
   * `alex`
   * `cspell`
