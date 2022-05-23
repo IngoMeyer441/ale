@@ -241,6 +241,7 @@ Notes:
   * `stack-ghc`
   * `stylish-haskell`
 * HCL
+  * `packer-fmt`
   * `terraform-fmt`
 * HTML
   * `VSCode HTML language server`
@@ -394,6 +395,8 @@ Notes:
   * `ibm_validator`
   * `prettier`
   * `yamllint`
+* Packer
+  * `packer-fmt-fixer`
 * Pascal
   * `ptop`
 * Pawn
@@ -491,6 +494,10 @@ Notes:
   * `ols`
   * `reason-language-server`
   * `refmt`
+* Rego
+  * `cspell`
+  * `opacheck`
+  * `opafmt`
 * reStructuredText
   * `alex`
   * `cspell`
@@ -663,6 +670,7 @@ Notes:
 * Zeek
   * `zeek`!!
 * Zig
+  * `zigfmt`
   * `zls`
 
 ===============================================================================
