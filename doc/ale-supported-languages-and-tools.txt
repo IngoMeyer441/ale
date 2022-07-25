@@ -97,6 +97,8 @@ Notes:
   * `gcc` (`cc`)
   * `oclint`
   * `uncrustify`
+* Cairo
+  * `starknet`
 * Chef
   * `cookstyle`
   * `foodcritic`!!

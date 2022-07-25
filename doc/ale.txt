@@ -2776,6 +2776,8 @@ documented in additional help files.
     flawfinder............................|ale-c-flawfinder|
     oclint................................|ale-c-oclint|
     uncrustify............................|ale-c-uncrustify|
+  cairo...................................|ale-cairo-options|
+    starknet..............................|ale-cairo-starknet|
   chef....................................|ale-chef-options|
     cookstyle.............................|ale-chef-cookstyle|
     foodcritic............................|ale-chef-foodcritic|
