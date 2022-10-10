@@ -599,6 +599,7 @@ Notes:
   * `terraform-ls`
   * `terraform-lsp`
   * `tflint`
+  * `tfsec`
 * Texinfo
   * `alex`
   * `cspell`
