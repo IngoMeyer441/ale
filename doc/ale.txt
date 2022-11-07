@@ -3039,6 +3039,8 @@ documented in additional help files.
     luafmt................................|ale-lua-luafmt|
     selene................................|ale-lua-selene|
     stylua................................|ale-lua-stylua|
+  make....................................|ale-make-options|
+    checkmake.............................|ale-make-checkmake|
   markdown................................|ale-markdown-options|
     cspell................................|ale-markdown-cspell|
     dprint................................|ale-markdown-dprint|
@@ -3162,6 +3164,7 @@ documented in additional help files.
     pyre..................................|ale-python-pyre|
     pyright...............................|ale-python-pyright|
     reorder-python-imports................|ale-python-reorder_python_imports|
+    ruff..................................|ale-python-ruff|
     unimport..............................|ale-python-unimport|
     vulture...............................|ale-python-vulture|
     yapf..................................|ale-python-yapf|
