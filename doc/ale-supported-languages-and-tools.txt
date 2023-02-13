@@ -36,6 +36,7 @@ Notes:
   * `write-good`
 * ASM
   * `gcc`
+  * `llvm-mc`
 * AVRA
   * `avra`
 * Awk
@@ -257,6 +258,7 @@ Notes:
   * `alex`
   * `angular`
   * `cspell`
+  * `eslint`
   * `fecs`
   * `html-beautify`
   * `htmlhint`
@@ -342,6 +344,7 @@ Notes:
 * Lua
   * `cspell`
   * `lua-format`
+  * `lua-language-server`
   * `luac`
   * `luacheck`
   * `luafmt`
@@ -379,6 +382,7 @@ Notes:
   * `nimlsp`
   * `nimpretty`
 * nix
+  * `alejandra`
   * `nix-instantiate`
   * `nixfmt`
   * `nixpkgs-fmt`
