@@ -388,6 +388,7 @@ Notes:
   * `nimpretty`
 * nix
   * `alejandra`
+  * `deadnix`
   * `nix-instantiate`
   * `nixfmt`
   * `nixpkgs-fmt`
