@@ -215,7 +215,6 @@ Notes:
   * `golangci-lint`!!
   * `golangserver`
   * `golines`
-  * `golint`
   * `gometalinter`!!
   * `gopls`
   * `gosimple`!!
