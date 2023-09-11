@@ -588,6 +588,7 @@ Notes:
 * SML
   * `smlnj`
 * Solidity
+  * `forge`
   * `solc`
   * `solhint`
   * `solium`

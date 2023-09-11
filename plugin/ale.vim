@@ -14,6 +14,7 @@ let g:loaded_ale_dont_use_this_in_other_plugins_please = 1
 
 " A flag for detecting if the required features are set.
 if has('nvim')
+    " We check for NeoVim 0.2.0+, but we only officially support NeoVim 0.6.0
     let s:has_features = has('timers') && has('nvim-0.2.0')
 else
     " Check if Job and Channel functions are available, instead of the
@@ -25,7 +26,7 @@ if !s:has_features
     " Only output a warning if editing some special files.
     if index(['', 'gitcommit'], &filetype) == -1
         " no-custom-checks
-        echoerr 'ALE requires NeoVim >= 0.2.0 or Vim 8 with +timers +job +channel'
+        echoerr 'ALE requires NeoVim >= 0.6.0 or Vim 8 with +timers +job +channel'
         " no-custom-checks
         echoerr 'Please update your editor appropriately.'
     endif
@@ -191,9 +192,12 @@ let g:ale_deno_executable = get(g:, 'ale_deno_executable', 'deno')
 " If 1, enable a popup menu for commands.
 let g:ale_popup_menu_enabled = get(g:, 'ale_popup_menu_enabled', has('gui_running'))
 
+" If 0, save hidden files when code actions are applied.
+let g:ale_save_hidden = get(g:, 'ale_save_hidden', 0)
+
 " If 1, disables ALE's built in error display. Instead, all errors are piped
 " to the diagnostics API.
-let g:ale_use_neovim_diagnostics_api = get(g:, 'ale_use_neovim_diagnostics_api', 0)
+let g:ale_use_neovim_diagnostics_api = get(g:, 'ale_use_neovim_diagnostics_api', has('nvim-0.6'))
 
 if g:ale_use_neovim_diagnostics_api && !has('nvim-0.6')
     " no-custom-checks
@@ -249,9 +253,9 @@ command! -bar ALEPopulateQuickfix :call ale#list#ForcePopulateErrorList(1)
 command! -bar ALEPopulateLocList  :call ale#list#ForcePopulateErrorList(0)
 
 " Define a command to get information about current filetype.
-command! -bar ALEInfo :call ale#debugging#Info()
-" The same, but copy output to your clipboard.
-command! -bar ALEInfoToClipboard :call ale#debugging#InfoToClipboard()
+command! -bar -nargs=* ALEInfo :call ale#debugging#InfoCommand(<f-args>)
+" Deprecated and scheduled for removal in 4.0.0.
+command! -bar ALEInfoToClipboard :call ale#debugging#InfoToClipboardDeprecatedCommand()
 " Copy ALE information to a file.
 command! -bar -nargs=1 ALEInfoToFile :call ale#debugging#InfoToFile(<f-args>)
 
@@ -349,6 +353,10 @@ nnoremap <silent> <Plug>(ale_rename) :ALERename<Return>
 nnoremap <silent> <Plug>(ale_filerename) :ALEFileRename<Return>
 nnoremap <silent> <Plug>(ale_code_action) :ALECodeAction<Return>
 nnoremap <silent> <Plug>(ale_repeat_selection) :ALERepeatSelection<Return>
+nnoremap <silent> <Plug>(ale_info) :ALEInfo<Return>
+nnoremap <silent> <Plug>(ale_info_echo) :ALEInfo -echo<Return>
+nnoremap <silent> <Plug>(ale_info_clipboard) :ALEInfo -clipboard<Return>
+nnoremap <silent> <Plug>(ale_info_preview) :ALEInfo -preview<Return>
 
 " Set up autocmd groups now.
 call ale#events#Init()
