@@ -170,6 +170,7 @@ Notes:
   * `dialyxir`
   * `dogma`!!
   * `elixir-ls`
+  * `lexical`
   * `mix`!!
 * Elm
   * `elm-format`
@@ -548,6 +549,7 @@ Notes:
   * `brakeman`!!
   * `cspell`
   * `debride`
+  * `packwerk`!!
   * `prettier`
   * `rails_best_practices`!!
   * `reek`

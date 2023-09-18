@@ -60,6 +60,10 @@ let g:ale_filetype_blacklist = [
 let g:ale_linters = get(g:, 'ale_linters', {})
 " This option can be changed to only enable explicitly selected linters.
 let g:ale_linters_explicit = get(g:, 'ale_linters_explicit', 0)
+" Ignoring linters, for disabling some, or ignoring LSP diagnostics.
+let g:ale_linters_ignore = get(g:, 'ale_linters_ignore', {})
+" Disabling all language server functionality.
+let g:ale_disable_lsp = get(g:, 'ale_disable_lsp', 'auto')
 
 " This Dictionary configures which functions will be used for fixing problems.
 let g:ale_fixers = get(g:, 'ale_fixers', {})
@@ -242,6 +246,8 @@ command! -bar ALEDisableBuffer :call ale#toggle#DisableBuffer(bufnr(''))
 command! -bar ALEResetBuffer :call ale#toggle#ResetBuffer(bufnr(''))
 " A command to stop all LSP-like clients, including tsserver.
 command! -bar ALEStopAllLSPs :call ale#lsp#reset#StopAllLSPs()
+" A command to stop a specific language server, or tsseserver.
+command! -bar -bang -nargs=1 -complete=customlist,ale#lsp#reset#Complete ALEStopLSP :call ale#lsp#reset#StopLSP(<f-args>, '<bang>')
 
 " A command for linting manually.
 command! -bar ALELint :call ale#Queue(0, 'lint_file')
