@@ -2918,6 +2918,7 @@ documented in additional help files.
     astyle................................|ale-c-astyle|
     cc....................................|ale-c-cc|
     ccls..................................|ale-c-ccls|
+    clangcheck............................|ale-c-clangcheck|
     clangd................................|ale-c-clangd|
     clang-format..........................|ale-c-clangformat|
     clangtidy.............................|ale-c-clangtidy|
@@ -2928,6 +2929,7 @@ documented in additional help files.
     oclint................................|ale-c-oclint|
     uncrustify............................|ale-c-uncrustify|
   cairo...................................|ale-cairo-options|
+    scarb.................................|ale-cairo-scarb|
     starknet..............................|ale-cairo-starknet|
   chef....................................|ale-chef-options|
     cookstyle.............................|ale-chef-cookstyle|
@@ -3189,6 +3191,8 @@ documented in additional help files.
     mmc...................................|ale-mercury-mmc|
   nasm....................................|ale-nasm-options|
     nasm..................................|ale-nasm-nasm|
+  nickel..................................|ale-nickel-options|
+    nickel_format.........................|ale-nickel-nickel-format|
   nim.....................................|ale-nim-options|
     nimcheck..............................|ale-nim-nimcheck|
     nimlsp................................|ale-nim-nimlsp|
