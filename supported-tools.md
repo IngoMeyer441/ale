@@ -213,6 +213,8 @@ formatting.
   * [fusion-lint](https://github.com/RyanSquared/fusionscript)
 * Git Commit Messages
   * [gitlint](https://github.com/jorisroovers/gitlint)
+* Gleam
+  * [gleamlsp](https://github.com/gleam-lang/gleam)
 * GLSL
   * [glslang](https://github.com/KhronosGroup/glslang)
   * [glslls](https://github.com/svenstaro/glsl-language-server)
@@ -301,6 +303,7 @@ formatting.
   * [javalsp](https://github.com/georgewfraser/vscode-javac)
   * [uncrustify](https://github.com/uncrustify/uncrustify)
 * JavaScript
+  * [biome](http://biomejs.dev)
   * [clang-format](https://clang.llvm.org/docs/ClangFormat.html)
   * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
   * [deno](https://deno.land/)
@@ -569,6 +572,7 @@ formatting.
   * [reek](https://github.com/troessner/reek)
   * [rubocop](https://github.com/bbatsov/rubocop)
   * [ruby](https://www.ruby-lang.org)
+  * [rubyfmt](https://github.com/fables-tales/rubyfmt)
   * [rufo](https://github.com/ruby-formatter/rufo)
   * [solargraph](https://solargraph.org)
   * [sorbet](https://github.com/sorbet/sorbet)
@@ -661,6 +665,7 @@ formatting.
 * TOML
   * [dprint](https://dprint.dev)
 * TypeScript
+  * [biome](http://biomejs.dev)
   * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell)
   * [deno](https://deno.land/)
   * [dprint](https://dprint.dev/)
