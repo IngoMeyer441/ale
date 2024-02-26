@@ -3226,6 +3226,8 @@ documented in additional help files.
     ols...................................|ale-ocaml-ols|
     ocamlformat...........................|ale-ocaml-ocamlformat|
     ocp-indent............................|ale-ocaml-ocp-indent|
+  odin....................................|ale-odin-options|
+    ols...................................|ale-odin-ols|
   openapi.................................|ale-openapi-options|
     ibm_validator.........................|ale-openapi-ibm-validator|
     prettier..............................|ale-openapi-prettier|
@@ -3461,6 +3463,7 @@ documented in additional help files.
   verilog/systemverilog...................|ale-verilog-options|
     hdl-checker...........................|ale-verilog-hdl-checker|
     iverilog..............................|ale-verilog-iverilog|
+    slang.................................|ale-verilog-slang|
     verilator.............................|ale-verilog-verilator|
     vlog..................................|ale-verilog-vlog|
     xvlog.................................|ale-verilog-xvlog|
