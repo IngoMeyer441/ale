@@ -276,6 +276,8 @@ Notes:
   * `rustywind`
   * `tidy`
   * `write-good`
+* Hurl
+  * `hurlfmt`
 * Idris
   * `idris`
 * Ink
