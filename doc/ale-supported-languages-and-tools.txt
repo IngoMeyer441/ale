@@ -316,6 +316,7 @@ Notes:
   * `xo`
 * JSON
   * `VSCode JSON language server`
+  * `biome`
   * `clang-format`
   * `cspell`
   * `dprint`
@@ -328,6 +329,7 @@ Notes:
 * JSON5
   * `eslint`
 * JSONC
+  * `biome`
   * `eslint`
 * Jsonnet
   * `jsonnet-lint`

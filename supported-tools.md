@@ -325,6 +325,7 @@ formatting.
   * [xo](https://github.com/sindresorhus/xo)
 * JSON
   * [VSCode JSON language server](https://github.com/hrsh7th/vscode-langservers-extracted)
+  * [biome](https://biomejs.dev/)
   * [clang-format](https://clang.llvm.org/docs/ClangFormat.html)
   * [cspell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell) :warning:
   * [dprint](https://dprint.dev)
@@ -337,6 +338,7 @@ formatting.
 * JSON5
   * [eslint](http://eslint.org/) :warning:
 * JSONC
+  * [biome](https://biomejs.dev/)
   * [eslint](http://eslint.org/) :warning:
 * Jsonnet
   * [jsonnet-lint](https://jsonnet.org/learning/tools.html)
