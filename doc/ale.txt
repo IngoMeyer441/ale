@@ -3162,6 +3162,7 @@ documented in additional help files.
     dprint................................|ale-json-dprint|
     eslint................................|ale-json-eslint|
     fixjson...............................|ale-json-fixjson|
+    pytool................................|ale-json-pytool|
     jsonlint..............................|ale-json-jsonlint|
     jq....................................|ale-json-jq|
     prettier..............................|ale-json-prettier|

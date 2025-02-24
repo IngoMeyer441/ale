@@ -331,6 +331,7 @@ Notes:
   * `eslint`
   * `fixjson`
   * `jq`
+  * `json.tool`
   * `jsonlint`
   * `prettier`
   * `spectral`
