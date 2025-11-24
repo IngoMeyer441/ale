@@ -182,6 +182,7 @@ Notes:
   * `dialyxir`
   * `dogma`!!
   * `elixir-ls`
+  * `expert`
   * `lexical`
   * `mix`!!
 * Elm
@@ -291,6 +292,7 @@ Notes:
   * `prettier`
   * `proselint`
   * `rustywind`
+  * `superhtml`
   * `tidy`
   * `write-good`
 * HTML Angular
