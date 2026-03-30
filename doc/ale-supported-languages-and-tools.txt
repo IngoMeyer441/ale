@@ -406,6 +406,7 @@ Notes:
 * Markdown
   * `alex`
   * `cspell`
+  * `harper`
   * `languagetool`!!
   * `markdownlint`!!
   * `marksman`
