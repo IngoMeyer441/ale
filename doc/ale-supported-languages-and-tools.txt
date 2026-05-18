@@ -375,6 +375,7 @@ Notes:
   * `lacheck`
   * `proselint`
   * `redpen`
+  * `tex-fmt`
   * `texlab`
   * `textlint`
   * `vale`
@@ -564,6 +565,7 @@ Notes:
   * `reorder-python-imports`
   * ruff
   * ruff-format
+  * `ty`
   * `unimport`
   * `vulture`!!
   * `yapf`
