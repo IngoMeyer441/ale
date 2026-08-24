@@ -388,6 +388,7 @@ Notes:
   * `jsonnet-lint`
   * `jsonnetfmt`
 * Julia
+  * `fatou`
   * `languageserver`
 * Kotlin
   * `kotlinc`!!
@@ -438,7 +439,8 @@ Notes:
   * dprint
   * `harper`
   * `languagetool`!!
-  * `markdownlint`!!
+  * `markdownlint-cli`!!
+  * `markdownlint-cli2`!!
   * `marksman`
   * `mdformat`
   * `mdl`
@@ -506,6 +508,7 @@ Notes:
   * `yamllint`
 * OpenSCAD
   * `SCA2D`
+  * `openscad-lsp`
   * `scadformat`
 * Packer
   * `packer-fmt-fixer`
